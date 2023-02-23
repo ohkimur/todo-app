@@ -2,7 +2,7 @@ import { json, urlencoded } from 'body-parser'
 import dotenv from 'dotenv'
 import express, { Request, Response } from 'express'
 
-import { todoRoutes } from './api'
+import { todoRoutes, userRoutes } from './api'
 import { connection } from './config'
 
 dotenv.config()
@@ -12,6 +12,8 @@ const port = process.env.PORT || 3000
 
 app.use(json())
 app.use(urlencoded({ extended: true }))
+
+app.use('/users', userRoutes)
 
 app.use('/todos', todoRoutes)
 

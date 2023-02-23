@@ -1,11 +1,4 @@
-import {
-  Column,
-  DataType,
-  ForeignKey,
-  Model,
-  Table,
-} from 'sequelize-typescript'
-import { User } from './'
+import { Column, DataType, Model, Table } from 'sequelize-typescript'
 
 @Table({ tableName: 'todos' })
 export class Todo extends Model {
@@ -28,11 +21,4 @@ export class Todo extends Model {
     defaultValue: false,
   })
   completed: boolean
-
-  @ForeignKey(() => User)
-  @Column({
-    type: DataType.INTEGER,
-    allowNull: false,
-  })
-  userId!: number
 }

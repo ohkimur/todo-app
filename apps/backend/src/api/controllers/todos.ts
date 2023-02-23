@@ -1,19 +1,8 @@
-/**
-
-  createTodo(title)
-  markTodoCompleted(id)
-  markTodoUncompleted(id)
-  deleteTodo(id)
-  listTodos
-
- */
-
 import { RequestHandler } from 'express'
-import { Todo } from '../models'
+import { Todo } from '../.'
 
 export const createTodo: RequestHandler = async (req, res, _next) => {
   const { title, userId } = req.body
-  // TODO: Validate the request body
   const todo = await Todo.create({ title, userId })
   return res
     .status(200)
@@ -22,7 +11,6 @@ export const createTodo: RequestHandler = async (req, res, _next) => {
 
 export const markTodoCompleted: RequestHandler = async (req, res, _next) => {
   const { id } = req.params
-  // TODO: Validate the request body
   const todo = await Todo.findOne({ where: { id } })
   if (!todo) {
     return res.status(404).json({ message: 'Todo not found' })
@@ -39,7 +27,6 @@ export const markTodoCompleted: RequestHandler = async (req, res, _next) => {
 
 export const markTodoUncompleted: RequestHandler = async (req, res, _next) => {
   const { id } = req.params
-  // TODO: Validate the request body
   const todo = await Todo.findOne({ where: { id } })
   if (!todo) {
     return res.status(404).json({ message: 'Todo not found' })
@@ -56,7 +43,6 @@ export const markTodoUncompleted: RequestHandler = async (req, res, _next) => {
 
 export const deleteTodo: RequestHandler = async (req, res, _next) => {
   const { id } = req.params
-  // TODO: Validate the request body
   const todo = await Todo.findOne({ where: { id } })
   if (!todo) {
     return res.status(404).json({ message: 'Todo not found' })
