@@ -1,9 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { userSchema, UserSchema } from '@todos/shared'
 import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Button, Card, Input } from '..'
-
-import { userSchema, UserSchema } from '@todos/shared'
 
 export const Auth = () => {
   const [action, setAction] = useState<'login' | 'register'>('login')

@@ -29,7 +29,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.2",
-    "vite-plugin-svgr": "^2.4.0"
+    "vite-plugin-svgr": "^2.4.0",
+    "zod": "^3.20.6"
   },
   "devDependencies": {
     "@todos/config": "workspace:^0.0.1",
