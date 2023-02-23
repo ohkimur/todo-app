@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { todoSchema } from '@todos/shared'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Button, Card, Input, TodoItem, TodoList } from '.'
@@ -32,11 +32,15 @@ interface ITodoListCardProps {
 
 export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
   const [todos, setTodos] = useState(initialTodos)
+  const [filter, setFilter] = useState<'all' | 'completed' | 'incompleted'>(
+    'all'
+  )
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<JustTodoTitleSchema>({
     resolver: zodResolver(justTodoTileSchema),
   })
@@ -59,8 +63,44 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
     setTodos(todos => todos.filter(todo => todo.id !== id))
   }
 
+  const handleTodoCreate = (title: string) => {
+    setTodos(todos => [
+      ...todos,
+      {
+        id: todos.length + 1,
+        title,
+        completed: false,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+    ])
+  }
+
+  const filterTodos = () => {
+    if (filter === 'all') {
+      return initialTodos
+    }
+
+    if (filter === 'completed') {
+      return initialTodos.filter(todo => todo.completed)
+    }
+
+    if (filter === 'incompleted') {
+      return initialTodos.filter(todo => !todo.completed)
+    }
+
+    return todos
+  }
+
+  useEffect(() => {
+    const todos = filterTodos()
+    setTodos(todos)
+  }, [filter])
+
   const onSubmit: SubmitHandler<JustTodoTitleSchema> = data => {
     console.log(data)
+    handleTodoCreate(data.title)
+    reset()
   }
 
   return (
@@ -94,13 +134,31 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
         <span>Show:</span>
         <ul className='flex gap-3'>
           <li>
-            <Button styleType='linkCta'>All</Button>
+            <Button
+              styleType='linkCta'
+              disabled={filter === 'all'}
+              onClick={() => setFilter('all')}
+            >
+              All
+            </Button>
           </li>
           <li>
-            <Button styleType='linkCta'>Completed</Button>
+            <Button
+              styleType='linkCta'
+              disabled={filter === 'completed'}
+              onClick={() => setFilter('completed')}
+            >
+              Completed
+            </Button>
           </li>
           <li>
-            <Button styleType='linkCta'>Incompleted</Button>
+            <Button
+              styleType='linkCta'
+              disabled={filter === 'incompleted'}
+              onClick={() => setFilter('incompleted')}
+            >
+              Incompleted
+            </Button>
           </li>
         </ul>
       </footer>

@@ -1,5 +1,4 @@
-import { TodoListCard } from './components'
-import { AppContainer } from './components/core/AppContainer'
+import { AppContainer, TodoListCard } from './components'
 
 const App = () => {
   return (
