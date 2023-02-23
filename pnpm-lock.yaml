@@ -91,6 +91,7 @@ importers:
 
   apps/frontend:
     specifiers:
+      '@hookform/resolvers': ^2.9.11
       '@todos/config': workspace:^0.0.1
       '@types/react': ^18.0.28
       '@types/react-dom': ^18.0.11
@@ -114,12 +115,15 @@ importers:
       typescript: ^4.9.5
       vite: ^4.1.4
       vite-plugin-svgr: ^2.4.0
+      zod: ^3.20.6
     dependencies:
+      '@hookform/resolvers': 2.9.11_react-hook-form@7.43.2
       classnames: 2.3.2
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-hook-form: 7.43.2_react@18.2.0
       vite-plugin-svgr: 2.4.0_vite@4.1.4
+      zod: 3.20.6
     devDependencies:
       '@todos/config': link:../../packages/config
       '@types/react': 18.0.28
@@ -783,6 +787,14 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@hookform/resolvers/2.9.11_react-hook-form@7.43.2:
+    resolution: {integrity: sha512-bA3aZ79UgcHj7tFV7RlgThzwSSHZgvfbt2wprldRkYBcMopdMvHyO17Wwp/twcJasNFischFfS7oz8Katz8DdQ==}
+    peerDependencies:
+      react-hook-form: ^7.0.0
+    dependencies:
+      react-hook-form: 7.43.2_react@18.2.0
+    dev: false
 
   /@humanwhocodes/config-array/0.11.8:
     resolution: {integrity: sha512-UybHIJzJnR5Qc/MsD9Kr+RpO2h+/P1GhOwdiLPXK5TWk5sgTdu88bTD9UP+CKbPPh5Rni1u0GjAdYQLemG8g+g==}
@@ -5458,3 +5470,7 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  /zod/3.20.6:
+    resolution: {integrity: sha512-oyu0m54SGCtzh6EClBVqDDlAYRz4jrVtKwQ7ZnsEmMI9HnzuZFj8QFwAY1M5uniIYACdGvv0PBWPF2kO0aNofA==}
+    dev: false

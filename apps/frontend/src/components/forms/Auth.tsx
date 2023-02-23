@@ -1,6 +1,22 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { z } from 'zod'
 import { Button, Card, Input } from '..'
+
+const userSchema = z.object({
+  email: z.string().min(1, { message: 'Email is required' }).email({
+    message: 'Must be a valid email',
+  }),
+  password: z
+    .string()
+    .min(6, { message: 'Password must be atleast 6 characters' }),
+  fullName: z
+    .string()
+    .min(3, { message: 'Full name must be at least 3 characters' }),
+})
+
+type UserSchema = z.infer<typeof userSchema>
 
 export const Auth = () => {
   const [action, setAction] = useState<'login' | 'register'>('login')
@@ -13,9 +29,11 @@ export const Auth = () => {
     handleSubmit,
     formState: { errors },
     clearErrors,
-  } = useForm()
+  } = useForm<UserSchema>({ resolver: zodResolver(userSchema) })
 
-  const onSubmit = (data: any) => console.log(data)
+  const onSubmit: SubmitHandler<UserSchema> = data => {
+    console.log(action, data)
+  }
 
   useEffect(() => {
     if (action === 'login') {
@@ -43,35 +61,27 @@ export const Auth = () => {
             <Input
               placeholder='Full Name'
               fullWidth
-              {...register('fullName', { required: true })}
+              {...register('fullName')}
             />
             {errors.fullName && (
-              <span className='text-red-500'>This full name is required</span>
+              <span className='text-red-500'>{errors.fullName.message}</span>
             )}
           </div>
         ) : null}
 
         {/* Email */}
         <div className='flex flex-col w-full gap-2'>
-          <Input
-            placeholder='email'
-            fullWidth
-            {...register('email', { required: true })}
-          />
+          <Input placeholder='email' fullWidth {...register('email')} />
           {errors.email && (
-            <span className='text-red-500'>This email is required</span>
+            <span className='text-red-500'>{errors.email.message}</span>
           )}
         </div>
 
         {/* Password */}
         <div className='flex flex-col w-full gap-2'>
-          <Input
-            placeholder='password'
-            fullWidth
-            {...register('password', { required: true })}
-          />
+          <Input placeholder='password' fullWidth {...register('password')} />
           {errors.password && (
-            <span className='text-red-500'>This password is required</span>
+            <span className='text-red-500'>{errors.password.message}</span>
           )}
         </div>
 
