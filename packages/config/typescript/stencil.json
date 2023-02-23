@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Stencil",
+  "extends": "./base.json",
+  "compilerOptions": {
+    "jsx": "react",
+    "jsxFactory": "h"
+  }
+}

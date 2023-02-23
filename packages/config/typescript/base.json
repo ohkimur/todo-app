@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Default",
+  "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "strictPropertyInitialization": false,
+    "allowSyntheticDefaultImports": true,
+    "allowUnreachableCode": false,
+    "declaration": false,
+    "experimentalDecorators": true,
+    "lib": ["DOM", "ES2017", "ESNext"],
+    "moduleResolution": "Node",
+    "module": "ESNext",
+    "target": "ES2017",
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "noUnusedLocals": false,
+    "skipLibCheck": true,
+    "emitDecoratorMetadata": true,
+    "assumeChangesOnlyAffectDirectDependencies": true,
+    "noUnusedParameters": true,
+    "resolveJsonModule": true,
+    "strictNullChecks": true
+  }
+}

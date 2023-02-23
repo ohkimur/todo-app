@@ -1,0 +1,9 @@
+{
+  "mode": "pre",
+  "tag": "alpha",
+  "initialVersions": {
+    "@monorepo/config": "0.0.0",
+    "@monorepo/shared": "0.0.0"
+  },
+  "changesets": []
+}

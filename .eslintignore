@@ -1,0 +1,8 @@
+.cache
+.turbo
+.next
+build
+**/.dist/**
+!.eslintrc.js
+**/node_modules/**
+**/src/components.d.ts

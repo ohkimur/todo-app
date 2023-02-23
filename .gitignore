@@ -1,0 +1,12 @@
+node_modules
+.turbo
+*.log
+*.local
+.env
+.cache
+.DS_Store
+
+graph.html
+
+dist
+_release

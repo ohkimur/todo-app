@@ -1,0 +1,20 @@
+{
+  "search.exclude": {
+    "**/.pnp.*": true
+  },
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "git.ignoreLimitWarning": true,
+  "tailwindCSS.experimental.classRegex": ["tw`([^`]*)"],
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "source.fixAll.eslint": true,
+    "source.organizeImports": true
+  },
+  "editor.formatOnSave": true,
+  "typescript.format.enable": true,
+  "html.customData": ["packages/core/dist/vscode-data.json"]
+}

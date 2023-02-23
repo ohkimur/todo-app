@@ -1,0 +1,94 @@
+name: CI CD
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'next'
+      - 'alpha'
+      - 'beta'
+  pull_request_target:
+    branches:
+      - '*'
+
+jobs:
+  build:
+    name: Build and release
+
+    strategy:
+      matrix:
+        runs-on: [ubuntu-latest]
+        node-version: [18]
+
+    runs-on: ${{ matrix.runs-on }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 7
+
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm build
+
+      - name: Test
+        run: pnpm test
+
+      # - name: Upload files to deploy
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: www
+      #     path: apps/showcase/www
+      #     retention-days: 1
+
+      # - name: Create Release Pull Request or Publish to npm
+      #   id: changesets
+      #   uses: changesets/action@v1
+      #   with:
+      #     publish: pnpm release
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  # deploy:
+  #   name: Deploy
+  #   needs: build
+
+  #   strategy:
+  #     matrix:
+  #       runs-on: [ubuntu-latest]
+  #       node-version: [18]
+
+  #   runs-on: ${{ matrix.runs-on }}
+
+  #   steps:
+  #     - name: Download files to deploy
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         name: www
+  #         path: www
+
+  #     - name: Setup - gcloud / gsutil
+  #       uses: google-github-actions/setup-gcloud@v0
+  #       with:
+  #         service_account_key: ${{ secrets.GCS_SA_KEY }}
+  #         project_id: ${{ secrets.GCS_PROJECT }}
+  #         export_default_credentials: true
+
+  #     - name: Deploy to Google Cloud Storage
+  #       run: |
+  #         gsutil -m rsync -R www gs://${{ secrets.GCS_BUCKET }}

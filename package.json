@@ -1,0 +1,44 @@
+{
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "build:apps": "turbo run build --filter=\"./apps/*\"",
+    "build:frontend": "turbo run build --filter=\"./apps/frontend\"",
+    "build:backend": "turbo run build --filter=\"./apps/backend\"",
+    "clean": "turbo run clean",
+    "dev": "turbo run dev",
+    "dev:frontend": "turbo run dev --filter=\"./apps/frontend\"",
+    "dev:backend": "turbo run dev --filter=\"./apps/backend\"",
+    "format": "turbo run format --no-cache --concurrency=1",
+    "lint:staged": "turbo run lint:staged --no-cache --concurrency=1",
+    "lint:fix": "turbo run lint:fix --parallel",
+    "release": "pnpm changeset publish && pnpm up",
+    "ci:publish": "pnpm publish -r",
+    "test": "turbo run test",
+    "graph": "turbo run build --graph=graph.html",
+    "postinstall": "husky install",
+    "preinstall": "npx only-allow pnpm"
+  },
+  "devDependencies": {
+    "@changesets/changelog-github": "^0.4.8",
+    "@changesets/cli": "^2.26.0",
+    "@monorepo/config": "workspace:0.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.53.0",
+    "@typescript-eslint/parser": "^5.53.0",
+    "eslint": "^8.34.0",
+    "eslint-config-prettier": "^8.6.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.1.2",
+    "prettier": "^2.8.4",
+    "prettier-plugin-packagejson": "^2.4.3",
+    "rimraf": "^4.1.2",
+    "sort-package-json": "^2.4.1",
+    "turbo": "latest",
+    "typescript": "^4.9.5"
+  }
+}
