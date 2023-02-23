@@ -1,1 +1,1 @@
-export * from './LogIn'
+export * from './Auth'
