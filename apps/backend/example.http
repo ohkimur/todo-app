@@ -1,0 +1,11 @@
+GET http://localhost:3000/todos
+
+# POST http://localhost:3000/todos
+  # Content-Type: application/json  
+  # { "title": "My first todo", "userId": 1 }
+
+# PUT http://localhost:3000/todos/1/completed
+
+# PUT http://localhost:3000/todos/1/uncompleted
+
+DELETE http://localhost:3000/todos/3

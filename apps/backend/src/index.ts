@@ -1,14 +1,22 @@
+import { json, urlencoded } from 'body-parser'
 import dotenv from 'dotenv'
-import express from 'express'
+import express, { Request, Response } from 'express'
+
 import { connection } from './config'
+import { todoRoutes } from './routes'
 
 dotenv.config()
 
 const app = express()
 const port = process.env.PORT || 3000
 
-app.get('/', (_req, res) => {
-  res.send('Express + TypeScript Server = 🎉')
+app.use(json())
+app.use(urlencoded({ extended: true }))
+
+app.use('/todos', todoRoutes)
+
+app.use((error: Error, _req: Request, res: Response) => {
+  res.status(500).json({ message: error.message })
 })
 
 connection.sync().then(() => {
