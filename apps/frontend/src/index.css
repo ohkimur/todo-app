@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: 'MarkPro';
+  font-style: normal;
+  src: local('MarkPro'), url(@/assets/fonts/Mark-Pro.ttf) format('truetype');
+}
