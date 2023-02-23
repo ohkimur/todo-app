@@ -2,8 +2,8 @@ import { json, urlencoded } from 'body-parser'
 import dotenv from 'dotenv'
 import express, { Request, Response } from 'express'
 
+import { todoRoutes } from './api'
 import { connection } from './config'
-import { todoRoutes } from './routes'
 
 dotenv.config()
 

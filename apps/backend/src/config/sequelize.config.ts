@@ -3,7 +3,7 @@ import { Sequelize } from 'sequelize-typescript'
 
 dotenv.config()
 
-import { Todo } from '../models/'
+import { Todo } from '../api'
 
 export const connection = new Sequelize({
   dialect: 'postgres',
