@@ -1,7 +1,12 @@
-import { AppContainer } from './components/AppContainer'
+import { LogIn } from './components'
+import { AppContainer } from './components/core/AppContainer'
 
 const App = () => {
-  return <AppContainer />
+  return (
+    <AppContainer>
+      <LogIn />
+    </AppContainer>
+  )
 }
 
 export default App
