@@ -4,6 +4,7 @@ interface IButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   styleType?: 'cta' | 'linkCta' | 'link'
   fullWidth?: boolean
   active?: boolean
+  className?: string
 }
 
 export const Button = ({
@@ -11,6 +12,7 @@ export const Button = ({
   styleType = 'cta',
   fullWidth = false,
   active = false,
+  className = '',
   ...props
 }: IButtonProps) => {
   return (
@@ -25,6 +27,7 @@ export const Button = ({
           styleType === 'linkCta' && active,
         'underline hover:text-blue-400 text-sm active:text-dark-blue-grey active:no-underline':
           styleType === 'link',
+        [className]: className,
       })}
       {...props}
     >
