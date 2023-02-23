@@ -1,11 +1,11 @@
 {
-  "name": "@monorepo/shared",
+  "name": "@todo/shared",
   "version": "0.0.1",
   "private": true,
   "description": "Shared interfaces and functions",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ohkimur/monorepo-template"
+    "url": "https://github.com/ohkimur/todo-app"
   },
   "sideEffects": false,
   "exports": {
@@ -39,7 +39,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@monorepo/config": "workspace:0.0.1",
+    "@todo/config": "workspace:0.0.1",
     "@types/node": "^18.14.0",
     "eslint": "^8.34.0",
     "prettier": "^2.8.4",

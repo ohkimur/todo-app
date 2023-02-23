@@ -1,5 +1,5 @@
 {
-  "name": "@monorepo/config",
+  "name": "@todo/config",
   "version": "0.0.1",
   "private": true,
   "files": [

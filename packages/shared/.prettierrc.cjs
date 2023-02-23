@@ -1,1 +1,1 @@
-module.exports = require('@monorepo/config/prettier/base.cjs')
+module.exports = require('@todo/config/prettier/base.cjs')

@@ -1,1 +1,1 @@
-module.exports = require('@monorepo/config/eslint/ts.cjs')
+module.exports = require('@todo/config/eslint/ts.cjs')

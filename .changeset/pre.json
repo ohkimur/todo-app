@@ -2,8 +2,8 @@
   "mode": "pre",
   "tag": "alpha",
   "initialVersions": {
-    "@monorepo/config": "0.0.0",
-    "@monorepo/shared": "0.0.0"
+    "@todo/config": "0.0.0",
+    "@todo/shared": "0.0.0"
   },
   "changesets": []
 }
