@@ -1,9 +1,9 @@
 import { ReactComponent as PathCopy } from '@/assets/svg/x-mark.svg'
 import cx from 'classnames'
-import { MouseEventHandler } from 'react'
+import { InputHTMLAttributes, MouseEventHandler } from 'react'
 import { Checkbox } from '.'
 
-interface ITodoItemProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface ITodoItemProps extends InputHTMLAttributes<HTMLInputElement> {
   children?: React.ReactNode
   className?: string
   onDelete?: MouseEventHandler<HTMLButtonElement>
