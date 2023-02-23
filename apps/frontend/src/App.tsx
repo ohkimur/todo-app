@@ -1,11 +1,7 @@
-import { Button } from './components'
+import { AppContainer } from './components/AppContainer'
 
 const App = () => {
-  return (
-    <div className='flex bg-slate-900 justify-center items-center w-full h-[100vh]'>
-      <Button>Press me!</Button>
-    </div>
-  )
+  return <AppContainer />
 }
 
 export default App
