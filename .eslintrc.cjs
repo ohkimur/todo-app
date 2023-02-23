@@ -1,1 +1,1 @@
-module.exports = require('@todo/config/eslint/root.cjs')
+module.exports = require('@todos/config/eslint/root.cjs')

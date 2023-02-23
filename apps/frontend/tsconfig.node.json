@@ -1,5 +1,5 @@
 {
-  "extends": "@todo/config/typescript/base.json",
+  "extends": "@todos/config/typescript/base.json",
   "compilerOptions": {
     "composite": true,
     "module": "ESNext",

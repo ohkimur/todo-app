@@ -1,5 +1,5 @@
 {
-  "name": "@todo/backend",
+  "name": "@todos/backend",
   "version": "0.0.0",
   "private": true,
   "sideEffects": false,
@@ -34,13 +34,19 @@
     "package.json": "sort-package-json"
   },
   "dependencies": {
-    "@types/express": "^4.17.17",
-    "@types/node": "^18.14.0",
     "dotenv": "^16.0.3",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "pg": "^8.9.0",
+    "pg-hstore": "^2.3.4",
+    "reflect-metadata": "^0.1.13",
+    "sequelize": "^6.28.2",
+    "sequelize-typescript": "^2.1.5"
   },
   "devDependencies": {
-    "@todo/config": "workspace:^0.0.1",
+    "@todos/config": "workspace:^0.0.1",
+    "@types/express": "^4.17.17",
+    "@types/node": "^18.14.0",
+    "@types/validator": "^13.7.12",
     "@typescript-eslint/eslint-plugin": "^5.53.0",
     "@typescript-eslint/parser": "^5.53.0",
     "eslint": "^8.34.0",

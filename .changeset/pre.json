@@ -2,8 +2,8 @@
   "mode": "pre",
   "tag": "alpha",
   "initialVersions": {
-    "@todo/config": "0.0.0",
-    "@todo/shared": "0.0.0"
+    "@todos/config": "0.0.0",
+    "@todos/shared": "0.0.0"
   },
   "changesets": []
 }

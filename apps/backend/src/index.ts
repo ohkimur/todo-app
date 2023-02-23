@@ -1,5 +1,6 @@
 import dotenv from 'dotenv'
 import express from 'express'
+import { connection } from './config'
 
 dotenv.config()
 
@@ -10,6 +11,8 @@ app.get('/', (_req, res) => {
   res.send('Express + TypeScript Server = 🎉')
 })
 
-app.listen(port, () => {
-  console.log(`⚡️[Server]: Server is running at http://localhost:${port}`)
+connection.sync().then(() => {
+  app.listen(port, () => {
+    console.log(`⚡️[Server]: Server is running at http://localhost:${port}`)
+  })
 })

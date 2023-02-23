@@ -1,1 +1,1 @@
-module.exports = require('@todo/config/eslint/react.cjs')
+module.exports = require('@todos/config/eslint/react.cjs')
