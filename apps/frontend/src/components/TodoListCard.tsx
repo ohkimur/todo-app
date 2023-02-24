@@ -124,6 +124,7 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
               checked={completed}
               onChange={e => handleTodoChange(id, e.target.checked)}
               onDelete={() => handleTodoDelete(id)}
+              disabled={isLoading}
             >
               {title}
             </TodoItem>

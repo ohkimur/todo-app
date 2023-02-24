@@ -8,7 +8,7 @@ export const getTodos = async (
   filter: 'all' | 'completed' | 'uncompleted' = 'all'
 ) => {
   const response = await fetch(
-    `http://localhost:3000/todos/${filter !== 'all' ? filter : ''}`
+    `http://localhost:3000/todos${filter !== 'all' ? `/${filter}` : ''}`
   )
   const { data: todos } = await response.json()
 
