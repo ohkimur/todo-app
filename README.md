@@ -17,14 +17,20 @@
 - [Prettier](https://prettier.io/)
 - [Husky](https://typicode.github.io/husky)
 - [Changesets](https://github.com/changesets/changesets)
+- [Zod](https://zod.dev/)
 
 ### Frontend
 - [React](https://reactjs.org/)
 - [Tailwindcss](https://tailwindcss.com/)
 - [Vite](https://vitejs.dev/)
+- [Zustand](https://github.com/pmndrs/zustand/)
+- [React Hook Form](https://react-hook-form.com/)
 
 ### Backend
 - [Express](https://expressjs.com/)
+- [Sequelize](https://sequelize.org/)
+- [Sequelize Typescript](https://www.npmjs.com/package/sequelize-typescript)
+- [Postgres](https://www.postgresql.org/)
 
 ## Workspaces
 
