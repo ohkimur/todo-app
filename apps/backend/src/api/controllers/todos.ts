@@ -58,5 +58,10 @@ export const deleteTodo: RequestHandler = async (req, res, _next) => {
 
 export const listTodos: RequestHandler = async (_req, res, _next) => {
   const todos = await Todo.findAll()
-  return res.status(200).json({ data: todos })
+  return res.status(200).json({
+    data: todos.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    ),
+  })
 }

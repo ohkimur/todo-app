@@ -1,11 +1,13 @@
-import { AppContainer, TodoListCard } from './components'
+import { AppContainer, Providers, TodoListCard } from './components'
 
 const App = () => {
   return (
-    <AppContainer>
-      <TodoListCard title='Todo List' />
-      {/* <Auth /> */}
-    </AppContainer>
+    <Providers>
+      <AppContainer>
+        <TodoListCard title='Todo List' />
+        {/* <Auth /> */}
+      </AppContainer>
+    </Providers>
   )
 }
 

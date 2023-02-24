@@ -1,7 +1,15 @@
+import {
+  completeTodo,
+  createTodo,
+  deleteTodo,
+  getTodos,
+  uncompleteTodo,
+} from '@/api'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { todoSchema } from '@todos/shared'
+import { TodoSchema, todoSchema } from '@todos/shared'
 import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useQuery } from 'react-query'
 import { z } from 'zod'
 import { Button, Card, Input, TodoItem, TodoList } from '.'
 
@@ -31,10 +39,18 @@ interface ITodoListCardProps {
 }
 
 export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
-  const [todos, setTodos] = useState(initialTodos)
   const [filter, setFilter] = useState<'all' | 'completed' | 'incompleted'>(
     'all'
   )
+
+  const {
+    data: todos,
+    isLoading,
+    error,
+    refetch,
+  } = useQuery<TodoSchema[]>('todos', async () => getTodos(), {
+    initialData: [],
+  })
 
   const {
     register,
@@ -45,35 +61,33 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
     resolver: zodResolver(justTodoTileSchema),
   })
 
-  const handleTodoChange = (id: number, completed: boolean) => {
-    setTodos(todos =>
-      todos.map(todo => {
-        if (todo.id === id) {
-          return {
-            ...todo,
-            completed,
-          }
-        }
-        return todo
-      })
-    )
+  const handleTodoChange = async (id: number, completed: boolean) => {
+    if (!completed) {
+      const uncompletedTodo = await uncompleteTodo(id)
+      if (uncompletedTodo) {
+        refetch()
+      }
+      return
+    }
+
+    const completedTodo = await completeTodo(id)
+    if (completedTodo) {
+      refetch()
+    }
   }
 
-  const handleTodoDelete = (id: number) => {
-    setTodos(todos => todos.filter(todo => todo.id !== id))
+  const handleTodoDelete = async (id: number) => {
+    const deletedTodo = await deleteTodo(id)
+    if (deletedTodo) {
+      refetch()
+    }
   }
 
-  const handleTodoCreate = (title: string) => {
-    setTodos(todos => [
-      ...todos,
-      {
-        id: todos.length + 1,
-        title,
-        completed: false,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      },
-    ])
+  const handleTodoCreate = async (title: string) => {
+    const newTodo = await createTodo({ title })
+    if (newTodo) {
+      refetch()
+    }
   }
 
   const filterTodos = () => {
@@ -92,16 +106,24 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
     return todos
   }
 
-  useEffect(() => {
-    const todos = filterTodos()
-    setTodos(todos)
-  }, [filter])
-
   const onSubmit: SubmitHandler<JustTodoTitleSchema> = data => {
-    console.log(data)
     handleTodoCreate(data.title)
     reset()
   }
+
+  useEffect(() => {
+    const todos = filterTodos()
+
+    refetch({
+      queryKey: 'todos',
+    })
+  }, [filter])
+
+  useEffect(() => {
+    // const todos = filterTodos()
+    // setTodos(todos)
+    console.log('todos', todos)
+  }, [todos])
 
   return (
     <Card title={title} subTitle={subTitle} className='w-full max-w-[440px]'>
@@ -116,18 +138,22 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
       </form>
 
       <TodoList>
-        {todos.map(({ id, title, completed }) => (
-          <TodoItem
-            id={String(id)}
-            key={id}
-            title={title}
-            checked={completed}
-            onChange={e => handleTodoChange(id, e.target.checked)}
-            onDelete={() => handleTodoDelete(id)}
-          >
-            {title}
-          </TodoItem>
-        ))}
+        {!isLoading ? (
+          todos?.map(({ id, title, completed }) => (
+            <TodoItem
+              id={String(id)}
+              key={id}
+              title={title}
+              checked={completed}
+              onChange={e => handleTodoChange(id, e.target.checked)}
+              onDelete={() => handleTodoDelete(id)}
+            >
+              {title}
+            </TodoItem>
+          ))
+        ) : (
+          <p>Loading...</p>
+        )}
       </TodoList>
 
       <footer className='flex gap-3 mt-12'>
