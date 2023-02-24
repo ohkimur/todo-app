@@ -65,3 +65,27 @@ export const listTodos: RequestHandler = async (_req, res, _next) => {
     ),
   })
 }
+
+export const listCompletedTodos: RequestHandler = async (_req, res, _next) => {
+  const todos = await Todo.findAll({ where: { completed: true } })
+  return res.status(200).json({
+    data: todos.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    ),
+  })
+}
+
+export const listUncompletedTodos: RequestHandler = async (
+  _req,
+  res,
+  _next
+) => {
+  const todos = await Todo.findAll({ where: { completed: false } })
+  return res.status(200).json({
+    data: todos.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    ),
+  })
+}

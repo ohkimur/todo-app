@@ -4,8 +4,12 @@ import { z } from 'zod'
 
 const todosSchema = z.array(todoSchema)
 
-export const getTodos = async () => {
-  const response = await fetch('http://localhost:3000/todos')
+export const getTodos = async (
+  filter: 'all' | 'completed' | 'uncompleted' = 'all'
+) => {
+  const response = await fetch(
+    `http://localhost:3000/todos/${filter !== 'all' ? filter : ''}`
+  )
   const { data: todos } = await response.json()
 
   try {

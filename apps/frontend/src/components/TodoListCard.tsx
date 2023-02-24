@@ -7,7 +7,7 @@ import {
 } from '@/api'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { TodoSchema, todoSchema } from '@todos/shared'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useQuery } from 'react-query'
 import { z } from 'zod'
@@ -38,19 +38,26 @@ interface ITodoListCardProps {
   subTitle?: string
 }
 
+type Filter = 'all' | 'completed' | 'uncompleted'
+
 export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
-  const [filter, setFilter] = useState<'all' | 'completed' | 'incompleted'>(
-    'all'
-  )
+  const [filter, setFilter] = useState<Filter>('all')
 
   const {
     data: todos,
     isLoading,
     error,
     refetch,
-  } = useQuery<TodoSchema[]>('todos', async () => getTodos(), {
-    initialData: [],
-  })
+  } = useQuery<TodoSchema[]>(
+    ['todos', filter],
+    async ({ queryKey }) => {
+      const [_, currentFilter] = queryKey as [string, Filter]
+      return getTodos(currentFilter)
+    },
+    {
+      initialData: [],
+    }
+  )
 
   const {
     register,
@@ -90,40 +97,10 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
     }
   }
 
-  const filterTodos = () => {
-    if (filter === 'all') {
-      return initialTodos
-    }
-
-    if (filter === 'completed') {
-      return initialTodos.filter(todo => todo.completed)
-    }
-
-    if (filter === 'incompleted') {
-      return initialTodos.filter(todo => !todo.completed)
-    }
-
-    return todos
-  }
-
   const onSubmit: SubmitHandler<JustTodoTitleSchema> = data => {
     handleTodoCreate(data.title)
     reset()
   }
-
-  useEffect(() => {
-    const todos = filterTodos()
-
-    refetch({
-      queryKey: 'todos',
-    })
-  }, [filter])
-
-  useEffect(() => {
-    // const todos = filterTodos()
-    // setTodos(todos)
-    console.log('todos', todos)
-  }, [todos])
 
   return (
     <Card title={title} subTitle={subTitle} className='w-full max-w-[440px]'>
@@ -180,8 +157,8 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
           <li>
             <Button
               styleType='linkCta'
-              disabled={filter === 'incompleted'}
-              onClick={() => setFilter('incompleted')}
+              disabled={filter === 'uncompleted'}
+              onClick={() => setFilter('uncompleted')}
             >
               Incompleted
             </Button>
