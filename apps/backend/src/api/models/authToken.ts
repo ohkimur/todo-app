@@ -1,4 +1,3 @@
-import bcrypt from 'bcrypt'
 import {
   BelongsTo,
   Column,
@@ -7,7 +6,7 @@ import {
   Model,
   Table,
 } from 'sequelize-typescript'
-import { authorizeUser, User } from '.'
+import { User } from '.'
 
 @Table({ tableName: 'authTokens' })
 export class AuthToken extends Model {

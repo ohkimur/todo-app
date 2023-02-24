@@ -1,79 +1,142 @@
+import { todoSchema } from '@todos/shared'
 import { RequestHandler } from 'express'
+import { ZodError } from 'zod'
 import { Todo } from '../.'
 
 export const createTodo: RequestHandler = async (req, res, _next) => {
-  const { title, userId } = req.body
-  const todo = await Todo.create({ title, userId })
-  return res
-    .status(200)
-    .json({ message: 'Todo created successfully', data: todo.dataValues })
+  try {
+    const { title } = req.body
+    const todo = await Todo.create({ title })
+
+    const parsedTodo = todoSchema.parse(todo.dataValues)
+    return res
+      .status(200)
+      .json({ message: 'Todo created successfully', data: parsedTodo })
+  } catch (error) {
+    console.error(error)
+
+    if (error instanceof ZodError) {
+      return res.status(400).json({ message: error.issues })
+    }
+    return res.status(500).json({ message: 'Internal server error' })
+  }
 }
 
 export const markTodoCompleted: RequestHandler = async (req, res, _next) => {
-  const { id } = req.params
-  const todo = await Todo.findOne({ where: { id } })
-  if (!todo) {
-    return res.status(404).json({ message: 'Todo not found' })
+  try {
+    const { id } = req.params
+    const todo = await Todo.findOne({ where: { id } })
+    if (!todo) {
+      return res.status(404).json({ message: 'Todo not found' })
+    }
+
+    todo.completed = true
+    await todo.save()
+
+    const parsedTodo = todoSchema.parse(todo.dataValues)
+    return res.status(200).json({
+      message: 'Todo marked completed successfully',
+      data: parsedTodo,
+    })
+  } catch (error) {
+    console.error(error)
+
+    if (error instanceof ZodError) {
+      return res.status(400).json({ message: error.issues })
+    }
+    return res.status(500).json({ message: 'Internal server error' })
   }
-
-  todo.completed = true
-  await todo.save()
-
-  return res.status(200).json({
-    message: 'Todo marked completed successfully',
-    data: todo.dataValues,
-  })
 }
 
 export const markTodoUncompleted: RequestHandler = async (req, res, _next) => {
-  const { id } = req.params
-  const todo = await Todo.findOne({ where: { id } })
-  if (!todo) {
-    return res.status(404).json({ message: 'Todo not found' })
+  try {
+    const { id } = req.params
+    const todo = await Todo.findOne({ where: { id } })
+    if (!todo) {
+      return res.status(404).json({ message: 'Todo not found' })
+    }
+
+    todo.completed = false
+    await todo.save()
+
+    const parsedTodo = todoSchema.parse(todo.dataValues)
+    return res.status(200).json({
+      message: 'Todo marked uncompleted successfully',
+      data: parsedTodo,
+    })
+  } catch (error) {
+    console.error(error)
+
+    if (error instanceof ZodError) {
+      return res.status(400).json({ message: error.issues })
+    }
+    return res.status(500).json({ message: 'Internal server error' })
   }
-
-  todo.completed = false
-  await todo.save()
-
-  return res.status(200).json({
-    message: 'Todo marked uncompleted successfully',
-    data: todo.dataValues,
-  })
 }
 
 export const deleteTodo: RequestHandler = async (req, res, _next) => {
-  const { id } = req.params
-  const todo = await Todo.findOne({ where: { id } })
-  if (!todo) {
-    return res.status(404).json({ message: 'Todo not found' })
+  try {
+    const { id } = req.params
+    const todo = await Todo.findOne({ where: { id } })
+    if (!todo) {
+      return res.status(404).json({ message: 'Todo not found' })
+    }
+
+    await todo.destroy()
+
+    const parsedTodo = todoSchema.parse(todo.dataValues)
+    return res.status(200).json({
+      message: 'Todo deleted successfully',
+      data: parsedTodo,
+    })
+  } catch (error) {
+    console.error(error)
+
+    if (error instanceof ZodError) {
+      return res.status(400).json({ message: error.issues })
+    }
+    return res.status(500).json({ message: 'Internal server error' })
   }
-
-  await todo.destroy()
-
-  return res.status(200).json({
-    message: 'Todo deleted successfully',
-    data: todo.dataValues,
-  })
 }
 
 export const listTodos: RequestHandler = async (_req, res, _next) => {
-  const todos = await Todo.findAll()
-  return res.status(200).json({
-    data: todos.sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    ),
-  })
+  try {
+    const todos = await Todo.findAll()
+    const parsedTodos = todos.map(todo => todoSchema.parse(todo.dataValues))
+    return res.status(200).json({
+      data: parsedTodos.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      ),
+    })
+  } catch (error) {
+    console.error(error)
+
+    if (error instanceof ZodError) {
+      return res.status(400).json({ message: error.issues })
+    }
+    return res.status(500).json({ message: 'Internal server error' })
+  }
 }
 
 export const listCompletedTodos: RequestHandler = async (_req, res, _next) => {
-  const todos = await Todo.findAll({ where: { completed: true } })
-  return res.status(200).json({
-    data: todos.sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    ),
-  })
+  try {
+    const todos = await Todo.findAll({ where: { completed: true } })
+    const parsedTodos = todos.map(todo => todoSchema.parse(todo.dataValues))
+    return res.status(200).json({
+      data: parsedTodos.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      ),
+    })
+  } catch (error) {
+    console.error(error)
+
+    if (error instanceof ZodError) {
+      return res.status(400).json({ message: error.issues })
+    }
+    return res.status(500).json({ message: 'Internal server error' })
+  }
 }
 
 export const listUncompletedTodos: RequestHandler = async (
@@ -81,11 +144,21 @@ export const listUncompletedTodos: RequestHandler = async (
   res,
   _next
 ) => {
-  const todos = await Todo.findAll({ where: { completed: false } })
-  return res.status(200).json({
-    data: todos.sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    ),
-  })
+  try {
+    const todos = await Todo.findAll({ where: { completed: false } })
+    const parsedTodos = todos.map(todo => todoSchema.parse(todo.dataValues))
+    return res.status(200).json({
+      data: parsedTodos.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      ),
+    })
+  } catch (error) {
+    console.error(error)
+
+    if (error instanceof ZodError) {
+      return res.status(400).json({ message: error.issues })
+    }
+    return res.status(500).json({ message: 'Internal server error' })
+  }
 }

@@ -6,32 +6,15 @@ import {
   uncompleteTodo,
 } from '@/api'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { TodoSchema, todoSchema } from '@todos/shared'
+import { todoSchema, TTodo } from '@todos/shared'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useQuery } from 'react-query'
 import { z } from 'zod'
 import { Button, Card, Input, TodoItem, TodoList } from '.'
 
-const initialTodos = [
-  {
-    id: 1,
-    title: 'Get insomnia 1',
-    completed: false,
-    createdAt: '2023-02-23T18:41:22.839Z',
-    updatedAt: '2023-02-23T18:41:22.839Z',
-  },
-  {
-    id: 2,
-    title: 'Get insomnia 2',
-    completed: true,
-    createdAt: '2023-02-23T18:41:22.839Z',
-    updatedAt: '2023-02-23T18:41:22.839Z',
-  },
-]
-
 const justTodoTileSchema = todoSchema.pick({ title: true })
-type JustTodoTitleSchema = z.infer<typeof justTodoTileSchema>
+type TJustTodoTitle = z.infer<typeof justTodoTileSchema>
 
 interface ITodoListCardProps {
   title?: string
@@ -48,7 +31,7 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
     isLoading,
     error,
     refetch,
-  } = useQuery<TodoSchema[]>(
+  } = useQuery<TTodo[]>(
     ['todos', filter],
     async ({ queryKey }) => {
       const [_, currentFilter] = queryKey as [string, Filter]
@@ -64,7 +47,7 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<JustTodoTitleSchema>({
+  } = useForm<TJustTodoTitle>({
     resolver: zodResolver(justTodoTileSchema),
   })
 
@@ -97,7 +80,7 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
     }
   }
 
-  const onSubmit: SubmitHandler<JustTodoTitleSchema> = data => {
+  const onSubmit: SubmitHandler<TJustTodoTitle> = data => {
     handleTodoCreate(data.title)
     reset()
   }

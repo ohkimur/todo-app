@@ -5,6 +5,7 @@ import { AuthToken, generateAuthToken } from '../.'
 export class User extends Model {
   @Column({
     type: DataType.INTEGER,
+    allowNull: false,
     primaryKey: true,
     autoIncrement: true,
   })
@@ -13,6 +14,7 @@ export class User extends Model {
   @Column({
     type: DataType.STRING,
     allowNull: false,
+    unique: true,
   })
   email!: string
 

@@ -1,10 +1,12 @@
+import { useAuth } from '@/hooks'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { userSchema, UserSchema } from '@todos/shared'
+import { TUser, userSchema } from '@todos/shared'
 import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Button, Card, Input } from '..'
 
 export const Auth = () => {
+  const { register: registerUser, login: loginUser } = useAuth()
   const [action, setAction] = useState<'login' | 'register'>('login')
 
   const [title, setTitle] = useState('Welcome back!')
@@ -15,10 +17,14 @@ export const Auth = () => {
     handleSubmit,
     formState: { errors },
     clearErrors,
-  } = useForm<UserSchema>({ resolver: zodResolver(userSchema) })
+  } = useForm<TUser>({ resolver: zodResolver(userSchema) })
 
-  const onSubmit: SubmitHandler<UserSchema> = data => {
-    console.log(action, data)
+  const onSubmit: SubmitHandler<TUser> = async data => {
+    if (action === 'register') {
+      registerUser(data.fullName, data.email, data.password)
+      return
+    }
+    loginUser(data.email, data.password)
   }
 
   useEffect(() => {
@@ -45,6 +51,7 @@ export const Auth = () => {
         {action === 'register' ? (
           <div className='flex flex-col w-full gap-2'>
             <Input
+              type={'text'}
               placeholder='Full Name'
               fullWidth
               {...register('fullName')}
@@ -57,7 +64,12 @@ export const Auth = () => {
 
         {/* Email */}
         <div className='flex flex-col w-full gap-2'>
-          <Input placeholder='email' fullWidth {...register('email')} />
+          <Input
+            type={'text'}
+            placeholder='email'
+            fullWidth
+            {...register('email')}
+          />
           {errors.email && (
             <span className='text-red-500'>{errors.email.message}</span>
           )}
@@ -65,7 +77,12 @@ export const Auth = () => {
 
         {/* Password */}
         <div className='flex flex-col w-full gap-2'>
-          <Input placeholder='password' fullWidth {...register('password')} />
+          <Input
+            type={'password'}
+            placeholder='password'
+            fullWidth
+            {...register('password')}
+          />
           {errors.password && (
             <span className='text-red-500'>{errors.password.message}</span>
           )}
@@ -73,11 +90,19 @@ export const Auth = () => {
 
         {/* Toggle between login and register */}
         {action === 'login' ? (
-          <Button styleType='link' onClick={() => setAction('register')}>
+          <Button
+            type='button'
+            styleType='link'
+            onClick={() => setAction('register')}
+          >
             Don't have an account? Sign up.
           </Button>
         ) : (
-          <Button styleType='link' onClick={() => setAction('login')}>
+          <Button
+            type='button'
+            styleType='link'
+            onClick={() => setAction('login')}
+          >
             Do have an account? Sign in.
           </Button>
         )}

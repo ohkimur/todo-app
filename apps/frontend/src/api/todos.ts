@@ -1,4 +1,4 @@
-import { TodoSchema, todoSchema } from '@todos/shared'
+import { todoSchema, TTodo } from '@todos/shared'
 
 import { z } from 'zod'
 import { API_BASEPATH } from '.'
@@ -22,7 +22,7 @@ export const getTodos = async (
   }
 }
 
-export const createTodo = async (todo: Pick<TodoSchema, 'title'>) => {
+export const createTodo = async (todo: Pick<TTodo, 'title'>) => {
   const response = await fetch(`${API_BASEPATH}/todos`, {
     method: 'POST',
     headers: {
@@ -37,7 +37,7 @@ export const createTodo = async (todo: Pick<TodoSchema, 'title'>) => {
     return parsedTodo
   } catch (error) {
     console.error(error)
-    return {}
+    return { error }
   }
 }
 
@@ -52,7 +52,7 @@ export const deleteTodo = async (id: number) => {
     return parsedTodo
   } catch (error) {
     console.error(error)
-    return {}
+    return { error }
   }
 }
 
@@ -67,7 +67,7 @@ export const completeTodo = async (id: number) => {
     return parsedTodo
   } catch (error) {
     console.error(error)
-    return {}
+    return { error }
   }
 }
 
@@ -82,6 +82,6 @@ export const uncompleteTodo = async (id: number) => {
     return parsedTodo
   } catch (error) {
     console.error(error)
-    return {}
+    return { error }
   }
 }

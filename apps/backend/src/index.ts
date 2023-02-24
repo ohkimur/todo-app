@@ -3,7 +3,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import express, { Request, Response } from 'express'
 
-import { todoRoutes, userRoutes } from './api'
+import { authRoutes, todoRoutes } from './api'
 import { connection } from './config'
 
 dotenv.config()
@@ -15,7 +15,7 @@ app.use(cors())
 app.use(json())
 app.use(urlencoded({ extended: true }))
 
-app.use('/users', userRoutes)
+app.use('/auth', authRoutes)
 
 app.use('/todos', todoRoutes)
 
