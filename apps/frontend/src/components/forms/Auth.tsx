@@ -45,10 +45,6 @@ export const Auth = () => {
     clearErrors()
   }, [title])
 
-  useEffect(() => {
-    console.log(errors)
-  }, [authErrors])
-
   return (
     <Card title={title} subTitle={subTitle} className='w-full max-w-[390px]'>
       <form

@@ -30,7 +30,9 @@ export const useAuth = () => {
 
     if (error || !authToken || !user) {
       console.error(error)
-      setErrors(errors)
+      if (error instanceof Error) {
+        setErrors([error.message])
+      }
       setIsAuthenticated(false)
       removeToken()
       removeUser()
@@ -48,7 +50,10 @@ export const useAuth = () => {
 
     if (error || !authToken || !user) {
       console.error(error)
-      setErrors(errors)
+
+      if (error instanceof Error) {
+        setErrors([error.message])
+      }
       setIsAuthenticated(false)
       removeToken()
       removeUser()
