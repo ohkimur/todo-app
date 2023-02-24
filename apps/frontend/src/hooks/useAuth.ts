@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useAuthStore } from '.'
 import { login as loginUser, register as registerUser } from '../api'
 
@@ -38,6 +39,7 @@ export const useAuth = () => {
 
     setIsAuthenticated(true)
     setToken(authToken.token)
+    localStorage.setItem('token', authToken.token)
     setUser(user)
   }
 
@@ -55,8 +57,25 @@ export const useAuth = () => {
 
     setIsAuthenticated(true)
     setToken(authToken.token)
+    localStorage.setItem('token', authToken.token)
     setUser(user)
   }
 
-  return { isAuthenticated, token, user, errors, register, login }
+  const logout = () => {
+    setIsAuthenticated(false)
+    removeToken()
+    removeUser()
+    removeErrors()
+    localStorage.removeItem('token')
+  }
+
+  useEffect(() => {
+    const localToken = localStorage.getItem('token')
+    if (localToken) {
+      setToken(localToken)
+      setIsAuthenticated(true)
+    }
+  }, [])
+
+  return { isAuthenticated, token, user, errors, register, login, logout }
 }

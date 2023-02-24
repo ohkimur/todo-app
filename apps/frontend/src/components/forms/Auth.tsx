@@ -6,7 +6,11 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { Button, Card, Input } from '..'
 
 export const Auth = () => {
-  const { register: registerUser, login: loginUser } = useAuth()
+  const {
+    register: registerUser,
+    login: loginUser,
+    errors: authErrors,
+  } = useAuth()
   const [action, setAction] = useState<'login' | 'register'>('login')
 
   const [title, setTitle] = useState('Welcome back!')
@@ -21,7 +25,7 @@ export const Auth = () => {
 
   const onSubmit: SubmitHandler<TUser> = async data => {
     if (action === 'register') {
-      registerUser(data.fullName, data.email, data.password)
+      registerUser(data.fullName || '', data.email, data.password)
       return
     }
     loginUser(data.email, data.password)
@@ -40,6 +44,10 @@ export const Auth = () => {
   useEffect(() => {
     clearErrors()
   }, [title])
+
+  useEffect(() => {
+    console.log(errors)
+  }, [authErrors])
 
   return (
     <Card title={title} subTitle={subTitle} className='w-full max-w-[390px]'>
@@ -61,6 +69,12 @@ export const Auth = () => {
             )}
           </div>
         ) : null}
+
+        {authErrors.map((error, index) => (
+          <span key={index} className='text-red-500'>
+            {error}
+          </span>
+        ))}
 
         {/* Email */}
         <div className='flex flex-col w-full gap-2'>
