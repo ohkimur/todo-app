@@ -1,6 +1,7 @@
 import { TodoSchema, todoSchema } from '@todos/shared'
 
 import { z } from 'zod'
+import { API_BASEPATH } from '.'
 
 const todosSchema = z.array(todoSchema)
 
@@ -8,7 +9,7 @@ export const getTodos = async (
   filter: 'all' | 'completed' | 'uncompleted' = 'all'
 ) => {
   const response = await fetch(
-    `http://localhost:3000/todos${filter !== 'all' ? `/${filter}` : ''}`
+    `${API_BASEPATH}/todos${filter !== 'all' ? `/${filter}` : ''}`
   )
   const { data: todos } = await response.json()
 
@@ -22,7 +23,7 @@ export const getTodos = async (
 }
 
 export const createTodo = async (todo: Pick<TodoSchema, 'title'>) => {
-  const response = await fetch('http://localhost:3000/todos', {
+  const response = await fetch(`${API_BASEPATH}/todos`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -41,7 +42,7 @@ export const createTodo = async (todo: Pick<TodoSchema, 'title'>) => {
 }
 
 export const deleteTodo = async (id: number) => {
-  const response = await fetch(`http://localhost:3000/todos/${id}`, {
+  const response = await fetch(`${API_BASEPATH}/todos/${id}`, {
     method: 'DELETE',
   })
   const { data: deletedTodo } = await response.json()
@@ -56,7 +57,7 @@ export const deleteTodo = async (id: number) => {
 }
 
 export const completeTodo = async (id: number) => {
-  const response = await fetch(`http://localhost:3000/todos/${id}/completed`, {
+  const response = await fetch(`${API_BASEPATH}/todos/${id}/completed`, {
     method: 'PUT',
   })
   const { data: completedTodo } = await response.json()
@@ -71,12 +72,9 @@ export const completeTodo = async (id: number) => {
 }
 
 export const uncompleteTodo = async (id: number) => {
-  const response = await fetch(
-    `http://localhost:3000/todos/${id}/uncompleted`,
-    {
-      method: 'PUT',
-    }
-  )
+  const response = await fetch(`${API_BASEPATH}/todos/${id}/uncompleted`, {
+    method: 'PUT',
+  })
   const { data: uncompletedTodo } = await response.json()
 
   try {
