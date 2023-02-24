@@ -98,7 +98,8 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
       </form>
 
       <TodoList>
-        {!isLoading ? (
+        {isLoading ? <p>Loading...</p> : null}
+        {!isLoading && todos?.length !== 0 ? (
           todos?.map(({ id, title, completed }) => (
             <TodoItem
               id={String(id)}
@@ -113,7 +114,7 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
             </TodoItem>
           ))
         ) : (
-          <p>Loading...</p>
+          <p>No toods.</p>
         )}
       </TodoList>
 
