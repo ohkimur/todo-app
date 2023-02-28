@@ -1,30 +1,19 @@
 import { json, urlencoded } from 'body-parser'
-import cors from 'cors'
 import dotenv from 'dotenv'
 import express, { Request, Response } from 'express'
-
-import { authRoutes, todoRoutes } from './api'
-import { connection } from './config'
 
 dotenv.config()
 
 const app = express()
 const port = process.env.PORT || 3000
 
-app.use(cors())
 app.use(json())
 app.use(urlencoded({ extended: true }))
-
-app.use('/auth', authRoutes)
-
-app.use('/todos', todoRoutes)
 
 app.use((error: Error, _req: Request, res: Response) => {
   res.status(500).json({ message: error.message })
 })
 
-connection.sync().then(() => {
-  app.listen(port, () => {
-    console.log(`⚡️[Server]: Server is running at http://localhost:${port}`)
-  })
+app.listen(port, () => {
+  console.log(`⚡️[Server]: Server is running at http://localhost:${port}`)
 })
