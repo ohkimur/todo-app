@@ -6,8 +6,16 @@ const prisma = new PrismaClient()
 export const usersRouter = Router()
 
 usersRouter.get('/me', async (_req, res) => {
-  const users = await prisma.user.findFirst()
-  res.json(users)
+  const user = await prisma.user.findFirst()
+  if (!user) {
+    return res.status(404).send('User not found')
+  }
+
+  res.json({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+  })
 })
 
 usersRouter.post('/users', async (req, res) => {
@@ -18,7 +26,6 @@ usersRouter.post('/users', async (req, res) => {
       email,
     },
   })
-
   if (user) {
     return res.status(400).send('User already exists')
   }

@@ -4,9 +4,9 @@ const prisma = new PrismaClient()
 
 const users = [
   {
-    name: 'Kimur',
-    email: 'ohkimur@gmail.com',
-    password: 'desene123',
+    name: 'admin',
+    email: 'admin@gmail.com',
+    password: 'admin123',
   },
   {
     name: 'Test',
@@ -30,7 +30,16 @@ const todos = [
   },
 ]
 
-const main = async () => {
+const deleteData = async () => {
+  console.log('Delete all existing todos and users ...')
+
+  await prisma.todo.deleteMany({})
+  await prisma.user.deleteMany({})
+
+  console.log('Deleted all existing todos and users.')
+}
+
+const seed = async () => {
   console.log('Start seeding ...')
 
   await prisma.user.createMany({
@@ -53,6 +62,11 @@ const main = async () => {
   })
 
   console.log('Seeding finished.')
+}
+
+const main = async () => {
+  await deleteData()
+  await seed()
 }
 
 main()

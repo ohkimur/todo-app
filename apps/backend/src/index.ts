@@ -1,7 +1,8 @@
 import { json, urlencoded } from 'body-parser'
 import dotenv from 'dotenv'
 import express, { Request, Response } from 'express'
-import { usersRouter } from './routes'
+import { errorHandler, errorLogger, invalidRoute } from './middlewares'
+import { todosRouter, usersRouter } from './routes'
 
 dotenv.config()
 
@@ -14,8 +15,15 @@ app.use(urlencoded({ extended: true }))
 app.get('/', (_req: Request, res: Response) => {
   res.send('Hello World!')
 })
-// version api
+
+// Use the routes
 app.use('/api/v1', usersRouter)
+app.use('/api/v1', todosRouter)
+
+// Use the error handlers
+app.use(errorLogger)
+app.use(errorHandler)
+app.use(invalidRoute)
 
 app.listen(port, () => {
   console.log(`⚡️[Server]: Server is running at http://localhost:${port}`)

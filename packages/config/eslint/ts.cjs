@@ -24,6 +24,10 @@ module.exports = {
   rules: {
     semi: ['error', 'never'],
     'react/react-in-jsx-scope': 'off',
+    '@typescript-eslint/no-unused-vars': [
+      'off',
+      { varsIgnorePattern: '^(?:h|_)$' },
+    ],
   },
   settings: {
     react: {
