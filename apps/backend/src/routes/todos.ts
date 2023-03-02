@@ -1,6 +1,6 @@
+import { CustomError } from '@/utils'
 import { PrismaClient } from '@prisma/client'
 import { Router } from 'express'
-import { CustomError } from '../middlewares'
 
 const prisma = new PrismaClient()
 

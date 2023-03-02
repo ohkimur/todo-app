@@ -1,7 +1,7 @@
+import { CustomError } from '@/utils'
 import { PrismaClient } from '@prisma/client'
 import argon2 from 'argon2'
 import { Router } from 'express'
-import { CustomError } from '../middlewares'
 
 const prisma = new PrismaClient()
 

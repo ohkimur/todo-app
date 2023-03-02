@@ -1,8 +1,8 @@
+import { errorHandler, errorLogger, invalidRoute } from '@/middlewares'
+import { authRouter, todosRouter, usersRouter } from '@/routes'
 import { json, urlencoded } from 'body-parser'
 import dotenv from 'dotenv'
 import express, { Request, Response } from 'express'
-import { errorHandler, errorLogger, invalidRoute } from './middlewares'
-import { authRouter, todosRouter, usersRouter } from './routes'
 
 dotenv.config()
 
