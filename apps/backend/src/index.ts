@@ -14,8 +14,8 @@ app.use(urlencoded({ extended: true }))
 app.get('/', (_req: Request, res: Response) => {
   res.send('Hello World!')
 })
-
-app.use('/users', usersRouter)
+// version api
+app.use('/api/v1', usersRouter)
 
 app.listen(port, () => {
   console.log(`⚡️[Server]: Server is running at http://localhost:${port}`)
