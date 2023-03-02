@@ -2,7 +2,7 @@ import { json, urlencoded } from 'body-parser'
 import dotenv from 'dotenv'
 import express, { Request, Response } from 'express'
 import { errorHandler, errorLogger, invalidRoute } from './middlewares'
-import { todosRouter, usersRouter } from './routes'
+import { authRouter, todosRouter, usersRouter } from './routes'
 
 dotenv.config()
 
@@ -17,6 +17,7 @@ app.get('/', (_req: Request, res: Response) => {
 })
 
 // Use the routes
+app.use('/api/v1', authRouter)
 app.use('/api/v1', usersRouter)
 app.use('/api/v1', todosRouter)
 
