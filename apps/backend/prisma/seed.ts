@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import argon2 from 'argon2'
 
 const prisma = new PrismaClient()
 
@@ -42,8 +43,15 @@ const deleteData = async () => {
 const seed = async () => {
   console.log('Start seeding ...')
 
+  const hashedUsers = await Promise.all(
+    users.map(async user => ({
+      ...user,
+      password: await argon2.hash(user.password),
+    }))
+  )
+
   await prisma.user.createMany({
-    data: users,
+    data: hashedUsers,
   })
 
   const firstUser = await prisma.user.findUnique({
@@ -52,7 +60,9 @@ const seed = async () => {
     },
   })
 
-  if (!firstUser) throw new Error('User not found')
+  if (!firstUser) {
+    throw new Error('User not found')
+  }
 
   await prisma.todo.createMany({
     data: todos.map(todo => ({
