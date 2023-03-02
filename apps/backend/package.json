@@ -18,6 +18,7 @@
     "build": "pnpm clean && pnpm compile",
     "clean": "shx rm -rf dist",
     "compile": "tsc -p tsconfig.json && tsc -p tsconfig.esm.json",
+    "db:seed": "ts-node-dev ./prisma/seed.ts",
     "dev": "ts-node-dev --respawn ./src/index.ts",
     "format": "prettier --write \"./**/*.{cjs,js,jsx,ts,tsx,css,sass,scss}\" --config ./.prettierrc.cjs",
     "lint:fix": "eslint --fix \"./**/*.{cjs,js,jsx,ts,tsx}\"",

@@ -16,5 +16,8 @@
   },
   "editor.formatOnSave": true,
   "typescript.format.enable": true,
-  "html.customData": ["packages/core/dist/vscode-data.json"]
+  "html.customData": ["packages/core/dist/vscode-data.json"],
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
+  }
 }
