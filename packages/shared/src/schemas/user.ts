@@ -7,7 +7,6 @@ export const userSchema = z
     email: z.string().min(1, { message: 'Email is required' }).email({
       message: 'Must be a valid email',
     }),
-    createdAt: z.date().or(z.string()),
   })
   .strip()
 

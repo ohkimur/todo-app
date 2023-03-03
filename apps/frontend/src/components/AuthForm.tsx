@@ -1,3 +1,4 @@
+import { useAuth } from '@/hooks'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   loginUserSchema,
@@ -9,6 +10,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { Button, Card, Input } from '.'
 
 export const AuthForm = () => {
+  const { login } = useAuth()
   const [action, setAction] = useState<'login' | 'register'>('login')
 
   const [title, setTitle] = useState('Welcome back!')
@@ -27,6 +29,10 @@ export const AuthForm = () => {
 
   const onSubmit: SubmitHandler<RegisterUserSchema> = async data => {
     console.log(data)
+    if (action === 'login') {
+      const res = await login(data)
+      console.log(res)
+    }
   }
 
   useEffect(() => {
