@@ -6,17 +6,23 @@ import {
   updateTodo,
 } from '@/controllers'
 import { validate } from '@/middlewares'
+import { authenticate } from '@/middlewares/auth'
 import { createTodoSchema, updateTodoSchema } from '@todos/shared'
 import { Router } from 'express'
 
 export const todosRouter = Router()
 
-todosRouter.get('/todos', getTodos)
+todosRouter.get('/todos', authenticate, getTodos)
 
-todosRouter.get('/todos/:id', getTodo)
+todosRouter.get('/todos/:id', authenticate, getTodo)
 
-todosRouter.post('/todos', validate(createTodoSchema), createTodo)
+todosRouter.post('/todos', validate(createTodoSchema), authenticate, createTodo)
 
-todosRouter.put('/todos/:id', validate(updateTodoSchema), updateTodo)
+todosRouter.put(
+  '/todos/:id',
+  validate(updateTodoSchema),
+  authenticate,
+  updateTodo
+)
 
-todosRouter.delete('/todos/:id', deleteTodo)
+todosRouter.delete('/todos/:id', authenticate, deleteTodo)

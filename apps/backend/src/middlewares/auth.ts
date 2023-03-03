@@ -4,7 +4,7 @@ import { UserSchema } from '@todos/shared'
 import { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 
-export const authorize = async (
+export const authenticate = async (
   req: Request,
   _res: Response,
   next: NextFunction
