@@ -10,7 +10,6 @@
       "@/*": ["src/*"]
     }
   },
-  "files": ["src/types.d.ts"],
   "include": ["src"],
   "exclude": ["node_modules"]
 }
