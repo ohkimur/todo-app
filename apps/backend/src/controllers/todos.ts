@@ -1,10 +1,8 @@
 import { ICustomRequest } from '@/types'
 import { CustomError } from '@/utils'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '@db/client'
 import { CreateTodoSchema, UpdateTodoSchema } from '@todos/shared'
 import { NextFunction, Request, Response } from 'express'
-
-const prisma = new PrismaClient()
 
 const findTodoOrThrow = async (id: number | string) => {
   const todo = await prisma.todo.findUnique({
