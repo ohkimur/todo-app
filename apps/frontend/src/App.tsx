@@ -1,21 +1,17 @@
-import { AppContainer, Auth, Providers } from './components'
+import { AppContainer, AuthForm, TodoListCard } from '@/components'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+
+const router = createBrowserRouter([
+  { path: '/', element: <TodoListCard title='Todo List' /> },
+  { path: '/login', element: <AuthForm /> },
+  { path: '/register', element: <AuthForm /> },
+])
+
 const App = () => {
   return (
-    <Providers>
-      <AppContainer className='relative'>
-        {/* TODO: Add router here */}
-        {/* <>
-          <TodoListCard title='Todo List' />
-          <Button
-            styleType='link'
-            className='absolute right-3 top-4 no-underline'
-          >
-            Logout
-          </Button>
-        </> */}
-        <Auth />
-      </AppContainer>
-    </Providers>
+    <AppContainer className='relative'>
+      <RouterProvider router={router} />
+    </AppContainer>
   )
 }
 

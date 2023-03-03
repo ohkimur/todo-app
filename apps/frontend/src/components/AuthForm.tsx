@@ -6,9 +6,9 @@ import {
 } from '@todos/shared'
 import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { Button, Card, Input } from '..'
+import { Button, Card, Input } from '.'
 
-export const Auth = () => {
+export const AuthForm = () => {
   const [action, setAction] = useState<'login' | 'register'>('login')
 
   const [title, setTitle] = useState('Welcome back!')
