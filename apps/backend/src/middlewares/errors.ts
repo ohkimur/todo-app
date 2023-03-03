@@ -20,7 +20,3 @@ export const errorHandler = (
   const statusCode = error.statusCode || 500
   res.status(statusCode).json({ message: error.message })
 }
-
-export const invalidRoute = (_req: Request, res: Response) => {
-  res.status(404).json({ message: 'Invalid route' })
-}

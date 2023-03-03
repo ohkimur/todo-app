@@ -1,10 +1,25 @@
-import { ICustomeRequest } from '@/types'
+import { ICustomRequest } from '@/types'
 import { CustomError } from '@/utils'
 import { PrismaClient } from '@prisma/client'
-import { TodoSchema } from '@todos/shared'
+import { CreateTodoSchema, UpdateTodoSchema } from '@todos/shared'
 import { NextFunction, Request, Response } from 'express'
 
 const prisma = new PrismaClient()
+
+const findTodoOrThrow = async (id: number | string) => {
+  const todo = await prisma.todo.findUnique({
+    where: {
+      id: Number(id),
+    },
+  })
+  if (!todo) {
+    throw new CustomError({
+      statusCode: 404,
+      message: 'Todo not found',
+    })
+  }
+  return todo
+}
 
 export const getTodos = async (
   _req: Request,
@@ -26,19 +41,7 @@ export const getTodo = async (
 ) => {
   try {
     const { id } = req.params
-    const todo = await prisma.todo.findUnique({
-      where: {
-        id: Number(id),
-      },
-    })
-
-    if (!todo) {
-      throw new CustomError({
-        statusCode: 404,
-        message: 'Todo not found',
-      })
-    }
-
+    const todo = await findTodoOrThrow(id)
     res.json(todo)
   } catch (error) {
     next(error)
@@ -46,20 +49,12 @@ export const getTodo = async (
 }
 
 export const createTodo = async (
-  req: ICustomeRequest<TodoSchema>,
+  req: ICustomRequest<CreateTodoSchema>,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const { title, completed } = req.body
-
-    if (!title) {
-      throw new CustomError({
-        statusCode: 400,
-        message: 'Title is required',
-      })
-    }
-
     const newTodo = await prisma.todo.create({
       data: {
         title,
@@ -67,7 +62,6 @@ export const createTodo = async (
         userId: 1,
       },
     })
-
     res.json(newTodo)
   } catch (error) {
     next(error)
@@ -75,7 +69,7 @@ export const createTodo = async (
 }
 
 export const updateTodo = async (
-  req: ICustomeRequest<TodoSchema>,
+  req: ICustomRequest<UpdateTodoSchema>,
   res: Response,
   next: NextFunction
 ) => {
@@ -83,18 +77,7 @@ export const updateTodo = async (
     const { id } = req.params
     const { title, completed } = req.body
 
-    const todo = await prisma.todo.findUnique({
-      where: {
-        id: Number(id),
-      },
-    })
-
-    if (!todo) {
-      throw new CustomError({
-        statusCode: 404,
-        message: 'Todo not found',
-      })
-    }
+    await findTodoOrThrow(id)
 
     const updatedTodo = await prisma.todo.update({
       where: {
@@ -119,18 +102,7 @@ export const deleteTodo = async (
   try {
     const { id } = req.params
 
-    const todo = await prisma.todo.findUnique({
-      where: {
-        id: Number(id),
-      },
-    })
-
-    if (!todo) {
-      throw new CustomError({
-        statusCode: 404,
-        message: 'Todo not found',
-      })
-    }
+    await findTodoOrThrow(id)
 
     const deletedTodo = await prisma.todo.delete({
       where: {
