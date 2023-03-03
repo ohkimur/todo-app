@@ -17,7 +17,7 @@ export const Card = ({
   return (
     <div
       className={cx(
-        'bg-white mx-5 px-[30px] py-[35px] rounded-md shadow-[0_2px_16px_0_rgba(0,0,0,0.1)] flex flex-col gap',
+        'bg-white mx-5 px-[30px] py-[35px] rounded-lg shadow-[0_2px_16px_0_rgba(0,0,0,0.1)] flex flex-col gap',
         {
           [className]: className,
         }

@@ -1,5 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { UserSchema, userSchema } from '@todos/shared'
+import {
+  loginUserSchema,
+  registerUserSchema,
+  RegisterUserSchema,
+} from '@todos/shared'
 import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Button, Card, Input } from '..'
@@ -15,9 +19,13 @@ export const Auth = () => {
     handleSubmit,
     formState: { errors },
     clearErrors,
-  } = useForm<UserSchema>({ resolver: zodResolver(userSchema) })
+  } = useForm<RegisterUserSchema>({
+    resolver: zodResolver(
+      action === 'login' ? loginUserSchema : registerUserSchema
+    ),
+  })
 
-  const onSubmit: SubmitHandler<UserSchema> = async data => {
+  const onSubmit: SubmitHandler<RegisterUserSchema> = async data => {
     console.log(data)
   }
 
@@ -41,12 +49,12 @@ export const Auth = () => {
         className='flex gap-5 flex-col items-start'
         onSubmit={handleSubmit(onSubmit)}
       >
-        {/* Full Name */}
+        {/* Name */}
         {action === 'register' ? (
           <div className='flex flex-col w-full gap-2'>
             <Input
               type={'text'}
-              placeholder='Full Name'
+              placeholder='Name'
               fullWidth
               {...register('name')}
             />
@@ -82,6 +90,23 @@ export const Auth = () => {
           )}
         </div>
 
+        {/* Confirm Password */}
+        {action === 'register' ? (
+          <div className='flex flex-col w-full gap-2'>
+            <Input
+              type={'confirmPassword'}
+              placeholder='confirmPassword'
+              fullWidth
+              {...register('confirmPassword')}
+            />
+            {errors.confirmPassword && (
+              <span className='text-red-500'>
+                {errors.confirmPassword.message}
+              </span>
+            )}
+          </div>
+        ) : null}
+
         {/* Toggle between login and register */}
         {action === 'login' ? (
           <Button
@@ -101,7 +126,7 @@ export const Auth = () => {
           </Button>
         )}
 
-        <Button type='submit' fullWidth className='mt-[52px] mb-[22px]'>
+        <Button type='submit' fullWidth className='mt-[52px]'>
           {action === 'login' ? 'Log In' : 'Sign Up'}
         </Button>
       </form>

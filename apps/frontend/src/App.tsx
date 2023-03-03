@@ -1,4 +1,4 @@
-import { AppContainer, Providers } from './components'
+import { AppContainer, Auth, Providers } from './components'
 const App = () => {
   return (
     <Providers>
@@ -13,7 +13,7 @@ const App = () => {
             Logout
           </Button>
         </> */}
-        {/* <Auth /> */}
+        <Auth />
       </AppContainer>
     </Providers>
   )
