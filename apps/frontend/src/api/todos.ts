@@ -1,4 +1,4 @@
-import { todoSchema, TTodo } from '@todos/shared'
+import { todoSchema, TodoSchema } from '@todos/shared'
 
 import { z } from 'zod'
 import { API_BASEPATH } from '.'
@@ -22,7 +22,7 @@ export const getTodos = async (
   }
 }
 
-export const createTodo = async (todo: Pick<TTodo, 'title'>) => {
+export const createTodo = async (todo: Pick<TodoSchema, 'title'>) => {
   const response = await fetch(`${API_BASEPATH}/todos`, {
     method: 'POST',
     headers: {

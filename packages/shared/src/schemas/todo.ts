@@ -9,8 +9,8 @@ export const todoSchema = z.object({
     })
     .max(100, { message: 'Title must be maximum 100 characters' }),
   completed: z.boolean(),
-  createdAt: z.date().or(z.string()),
-  updatedAt: z.date().or(z.string()),
+  // createdAt: z.date().or(z.string()),
+  // updatedAt: z.date().or(z.string()),
 })
 
-export type TTodo = z.infer<typeof todoSchema>
+export type TodoSchema = z.infer<typeof todoSchema>

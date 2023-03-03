@@ -1,16 +1,10 @@
-import { useAuth } from '@/hooks'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { TUser, userSchema } from '@todos/shared'
+import { UserSchema, userSchema } from '@todos/shared'
 import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Button, Card, Input } from '..'
 
 export const Auth = () => {
-  const {
-    register: registerUser,
-    login: loginUser,
-    errors: authErrors,
-  } = useAuth()
   const [action, setAction] = useState<'login' | 'register'>('login')
 
   const [title, setTitle] = useState('Welcome back!')
@@ -21,14 +15,10 @@ export const Auth = () => {
     handleSubmit,
     formState: { errors },
     clearErrors,
-  } = useForm<TUser>({ resolver: zodResolver(userSchema) })
+  } = useForm<UserSchema>({ resolver: zodResolver(userSchema) })
 
-  const onSubmit: SubmitHandler<TUser> = async data => {
-    if (action === 'register') {
-      registerUser(data.fullName || '', data.email, data.password)
-      return
-    }
-    loginUser(data.email, data.password)
+  const onSubmit: SubmitHandler<UserSchema> = async data => {
+    console.log(data)
   }
 
   useEffect(() => {
@@ -58,19 +48,13 @@ export const Auth = () => {
               type={'text'}
               placeholder='Full Name'
               fullWidth
-              {...register('fullName')}
+              {...register('name')}
             />
-            {errors.fullName && (
-              <span className='text-red-500'>{errors.fullName.message}</span>
+            {errors.name && (
+              <span className='text-red-500'>{errors.name.message}</span>
             )}
           </div>
         ) : null}
-
-        {authErrors.map((error, index) => (
-          <span key={index} className='text-red-500'>
-            {error}
-          </span>
-        ))}
 
         {/* Email */}
         <div className='flex flex-col w-full gap-2'>

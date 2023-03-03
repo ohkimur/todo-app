@@ -6,7 +6,7 @@ import {
   uncompleteTodo,
 } from '@/api'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { todoSchema, TTodo } from '@todos/shared'
+import { todoSchema, TodoSchema } from '@todos/shared'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useQuery } from 'react-query'
@@ -31,7 +31,7 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
     isLoading,
     error,
     refetch,
-  } = useQuery<TTodo[]>(
+  } = useQuery<TodoSchema[]>(
     ['todos', filter],
     async ({ queryKey }) => {
       const [_, currentFilter] = queryKey as [string, Filter]
