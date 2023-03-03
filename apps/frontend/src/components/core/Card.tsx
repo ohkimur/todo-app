@@ -17,21 +17,21 @@ export const Card = ({
   return (
     <div
       className={cx(
-        'bg-white mx-5 px-[30px] py-[35px] rounded-lg shadow-[0_2px_16px_0_rgba(0,0,0,0.1)] flex flex-col gap',
+        'bg-white mx-5 px-[30px] py-[35px] rounded-lg shadow-lg flex flex-col gap',
         {
           [className]: className,
         }
       )}
     >
-      <header className='flex flex-col gap-[6px]'>
-        <CheckIcon className='w-10 h-8 mb-[18px]' />
-        {title ? <h1 className='font-bold text-[22px]'>{title}</h1> : null}
+      <header className='flex flex-col gap-2'>
+        <CheckIcon className='w-10 h-8 mb-5' />
+        {title ? <h1 className='font-bold text-xl'>{title}</h1> : null}
         {subTitle ? (
-          <p className='text-base text-cool-grey-two'>{subTitle}</p>
+          <p className='text-base text-gray-500'>{subTitle}</p>
         ) : null}
       </header>
 
-      {children ? <main className='mt-[43px]'>{children}</main> : null}
+      {children ? <main className='mt-10'>{children}</main> : null}
     </div>
   )
 }

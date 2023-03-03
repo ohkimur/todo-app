@@ -35,7 +35,7 @@ export const Auth = () => {
       setSubTitle('Log in to continue.')
     } else {
       setTitle('Welcome!')
-      setSubTitle('Sign up to start using Simpledo today.')
+      setSubTitle('Sign up to start using Todos.')
     }
   }, [action])
 
@@ -94,7 +94,7 @@ export const Auth = () => {
         {action === 'register' ? (
           <div className='flex flex-col w-full gap-2'>
             <Input
-              type={'confirmPassword'}
+              type={'password'}
               placeholder='confirmPassword'
               fullWidth
               {...register('confirmPassword')}
@@ -109,24 +109,30 @@ export const Auth = () => {
 
         {/* Toggle between login and register */}
         {action === 'login' ? (
-          <Button
-            type='button'
-            styleType='link'
-            onClick={() => setAction('register')}
-          >
-            Don't have an account? Sign up.
-          </Button>
+          <span className='flex gap-2'>
+            Don't have an account?
+            <Button
+              type='button'
+              styleType='link'
+              onClick={() => setAction('register')}
+            >
+              Sign up
+            </Button>
+          </span>
         ) : (
-          <Button
-            type='button'
-            styleType='link'
-            onClick={() => setAction('login')}
-          >
-            Do have an account? Sign in.
-          </Button>
+          <span className='flex gap-2'>
+            Do have an account?
+            <Button
+              type='button'
+              styleType='link'
+              onClick={() => setAction('login')}
+            >
+              Sign in
+            </Button>
+          </span>
         )}
 
-        <Button type='submit' fullWidth className='mt-[52px]'>
+        <Button type='submit' fullWidth className='mt-12'>
           {action === 'login' ? 'Log In' : 'Sign Up'}
         </Button>
       </form>

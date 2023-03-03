@@ -23,12 +23,12 @@ export const Button = forwardRef<HTMLButtonElement, IButtonProps>(
     return (
       <button
         className={cx('transition-colors duration-200', {
-          'bg-dark-sky-blue text-white text-base font-normal px-4 py-2 rounded-md hover:bg-blue-500 active:text-blue-300 active:bg-blue-600':
+          'bg-blue-500 text-white text-base font-normal px-4 py-2 rounded-md hover:bg-blue-400 active:text-blue-200 active:bg-blue-600':
             styleType === 'cta',
-          'text-dark-sky-blue underline hover:text-blue-400 active:text-dark-blue-grey active:no-underline disabled:text-dark-blue-grey disabled:no-underline':
+          'text-blue-400 underline hover:text-blue-400 active:text-gray-700 active:no-underline disabled:text-gray-700 disabled:no-underline':
             styleType === 'linkCta',
           'w-full': fullWidth,
-          'underline hover:text-blue-400 text-sm active:text-dark-blue-grey active:no-underline':
+          'underline hover:text-blue-400 text-sm active:text-gray-700 active:no-underline':
             styleType === 'link',
           [className]: className,
         })}
