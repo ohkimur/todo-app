@@ -38,11 +38,11 @@
     "package.json": "sort-package-json"
   },
   "dependencies": {
-    "zod": "^3.20.6"
+    "zod": "^3.21.0"
   },
   "devDependencies": {
     "@todos/config": "workspace:0.0.1",
-    "@types/node": "^18.14.5",
+    "@types/node": "^18.14.6",
     "eslint": "^8.35.0",
     "prettier": "^2.8.4",
     "shx": "^0.3.4",
