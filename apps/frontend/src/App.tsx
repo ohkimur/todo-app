@@ -32,7 +32,6 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-
         <Route
           path='/login'
           element={isAuthenticated ? <Navigate to='/' /> : <AuthForm />}
