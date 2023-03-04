@@ -12,7 +12,7 @@ export const Checkbox = forwardRef<HTMLInputElement, ICheckboxProps>(
         <input type='checkbox' {...props} className='hidden peer' ref={ref} />
         <label
           htmlFor={props.id}
-          className='w-[18px] h-[18px] bg-white border border-gray-400 rounded peer-checked:bg-dark-sky-blue peer-checked:border-none cursor-pointer flex items-center justify-center transition-all duration-200'
+          className='w-[18px] h-[18px] bg-white border border-gray-500 rounded peer-checked:bg-blue-600 peer-checked:border-none cursor-pointer flex items-center justify-center transition-all duration-200'
         >
           <CheckIcon />
         </label>

@@ -27,7 +27,12 @@ export const createTodoSchema = todoSchema
 
 export type CreateTodoSchema = z.infer<typeof createTodoSchema>
 
-export const updateTodoSchema = createTodoSchema.partial().strip()
+export const updateTodoSchema = createTodoSchema
+  .partial()
+  .extend({
+    id: z.number(),
+  })
+  .strip()
 
 export type UpdateTodoSchema = z.infer<typeof updateTodoSchema>
 

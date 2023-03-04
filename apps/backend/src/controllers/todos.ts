@@ -34,7 +34,12 @@ export const getTodos = async (
 ) => {
   try {
     const completed =
-      req.query.completed !== '' ? req.query.completed === 'true' : undefined
+      req.query.completed === 'true' || req.query.completed === 'false'
+        ? req.query.completed === 'true'
+        : undefined
+
+    console.log(completed)
+
     const todos = await prisma.todo.findMany({
       where: {
         userId: req.user.id,
@@ -82,7 +87,7 @@ export const createTodo = async (
 }
 
 export const updateTodo = async (
-  req: ICustomRequest<UpdateTodoSchema>,
+  req: ICustomRequest<Omit<UpdateTodoSchema, 'id'>>,
   res: Response,
   next: NextFunction
 ) => {

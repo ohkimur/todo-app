@@ -1,4 +1,4 @@
-import { createTodo, getTodos } from '@/api'
+import { createTodo, getTodos, updateTodo } from '@/api'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { todoSchema, TodoSchema } from '@todos/shared'
 import { useState } from 'react'
@@ -29,7 +29,13 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
     ['todos', filter],
     async ({ queryKey }) => {
       const [_, currentFilter] = queryKey as [string, Filter]
-      return getTodos({ completed: currentFilter === 'completed' })
+      let completed: boolean | undefined = undefined
+      if (currentFilter === 'completed') {
+        completed = true
+      } else if (currentFilter === 'uncompleted') {
+        completed = false
+      }
+      return getTodos({ completed })
     },
     {
       initialData: [],
@@ -45,18 +51,14 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
     resolver: zodResolver(justTodoTileSchema),
   })
 
-  const handleTodoChange = async (_id: number, _completed: boolean) => {
-    // if (!completed) {
-    //   const uncompletedTodo = await uncompleteTodo(id)
-    //   if (uncompletedTodo) {
-    //     refetch()
-    //   }
-    //   return
-    // }
-    // const completedTodo = await completeTodo(id)
-    // if (completedTodo) {
-    //   refetch()
-    // }
+  const handleTodoChange = async (id: number, completed: boolean) => {
+    const completedTodo = await updateTodo({
+      id,
+      completed,
+    })
+    if (completedTodo) {
+      refetch()
+    }
   }
 
   const handleTodoDelete = async (_id: number) => {

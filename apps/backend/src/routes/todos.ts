@@ -18,9 +18,13 @@ todosRouter.get('/todos/:id', authenticate, getTodo)
 
 todosRouter.post('/todos', validate(createTodoSchema), authenticate, createTodo)
 
-todosRouter.put(
+todosRouter.patch(
   '/todos/:id',
-  validate(updateTodoSchema),
+  validate(
+    updateTodoSchema.omit({
+      id: true,
+    })
+  ),
   authenticate,
   updateTodo
 )

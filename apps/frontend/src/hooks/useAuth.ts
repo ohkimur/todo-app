@@ -1,4 +1,4 @@
-import { getMe, login, register } from '@/api'
+import { getMe, login, logout, register } from '@/api'
 import { LoginUserSchema, UserSchema } from '@todos/shared'
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -54,10 +54,6 @@ export const useAuth = () => {
     setIsAuthenticated(false)
   }, [user])
 
-  useEffect(() => {
-    console.log(isAuthenticated)
-  }, [isAuthenticated])
-
   const authenticateHandler = async () => {
     try {
       const user = await getMe()
@@ -101,11 +97,17 @@ export const useAuth = () => {
     }
   }
 
+  const logoutHandler = async () => {
+    await logout()
+    setUser(null)
+  }
+
   return {
     isAuthenticated,
     user,
     errors,
     login: loginHandler,
     register: registerHandler,
+    logout: logoutHandler,
   }
 }
