@@ -10,7 +10,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { Button, Card, Input } from '.'
 
 export const AuthForm = () => {
-  const { login } = useAuth()
+  const { login, errors: authErrors } = useAuth()
   const [action, setAction] = useState<'login' | 'register'>('login')
 
   const [title, setTitle] = useState('Welcome back!')
@@ -53,6 +53,14 @@ export const AuthForm = () => {
         className='flex gap-5 flex-col items-start'
         onSubmit={handleSubmit(onSubmit)}
       >
+        {authErrors && (
+          <span className='text-red-500'>
+            {authErrors.map((message, index) => (
+              <span key={index}>{message}</span>
+            ))}
+          </span>
+        )}
+
         {/* Name */}
         {action === 'register' ? (
           <div className='flex flex-col w-full gap-2'>
@@ -62,9 +70,9 @@ export const AuthForm = () => {
               fullWidth
               {...register('name')}
             />
-            {errors.name && (
+            {errors.name ? (
               <span className='text-red-500'>{errors.name.message}</span>
-            )}
+            ) : null}
           </div>
         ) : null}
 
@@ -76,9 +84,9 @@ export const AuthForm = () => {
             fullWidth
             {...register('email')}
           />
-          {errors.email && (
+          {errors.email ? (
             <span className='text-red-500'>{errors.email.message}</span>
-          )}
+          ) : null}
         </div>
 
         {/* Password */}
@@ -89,9 +97,9 @@ export const AuthForm = () => {
             fullWidth
             {...register('password')}
           />
-          {errors.password && (
+          {errors.password ? (
             <span className='text-red-500'>{errors.password.message}</span>
-          )}
+          ) : null}
         </div>
 
         {/* Confirm Password */}
@@ -103,11 +111,11 @@ export const AuthForm = () => {
               fullWidth
               {...register('confirmPassword')}
             />
-            {errors.confirmPassword && (
+            {errors.confirmPassword ? (
               <span className='text-red-500'>
                 {errors.confirmPassword.message}
               </span>
-            )}
+            ) : null}
           </div>
         ) : null}
 

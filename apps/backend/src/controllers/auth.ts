@@ -3,7 +3,7 @@ import { CustomError } from '@/utils'
 import { prisma } from '@db/client'
 import { LoginUserSchema, RegisterUserSchema } from '@todos/shared'
 import argon2 from 'argon2'
-import { NextFunction, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 
 const createToken = (user: LoginUserSchema) => {
@@ -49,11 +49,6 @@ export const login = async (
         maxAge: 1000 * 60 * 60 * 24,
         sameSite: 'strict',
       })
-      .cookie('isAuthenticated', true, {
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 1000 * 60 * 60 * 24,
-        sameSite: 'strict',
-      })
       .json({
         user: {
           id: user.id,
@@ -67,19 +62,36 @@ export const login = async (
   }
 }
 
+export const logout = async (
+  _req: Request,
+  res: Response,
+  _next: NextFunction
+) => {
+  res
+    .clearCookie('token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+    })
+    .json({
+      message: 'Logout successful',
+    })
+}
+
 export const register = async (
   req: ICustomRequest<RegisterUserSchema>,
   res: Response,
   next: NextFunction
 ) => {
-  try {
-    const { name, email, password } = req.body
+  const { name, email, password } = req.body
 
+  try {
     const user = await prisma.user.findUnique({
       where: {
         email,
       },
     })
+
     if (user) {
       throw new CustomError({
         statusCode: 400,
@@ -101,11 +113,6 @@ export const register = async (
     res
       .cookie('token', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 1000 * 60 * 60 * 24,
-        sameSite: 'strict',
-      })
-      .cookie('isAuthenticated', true, {
         secure: process.env.NODE_ENV === 'production',
         maxAge: 1000 * 60 * 60 * 24,
         sameSite: 'strict',

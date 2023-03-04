@@ -12,11 +12,14 @@ export const errorLogger = (
 }
 
 export const errorHandler = (
-  error: CustomError,
+  error: CustomError | Error,
   _req: Request,
   res: Response,
   _next: NextFunction
 ) => {
-  const statusCode = error.statusCode || 500
-  res.status(statusCode).json({ message: error.message })
+  if (error instanceof CustomError) {
+    const statusCode = error.statusCode
+    return res.status(statusCode).json({ message: error.message })
+  }
+  return res.status(500).json({ message: 'Internal server error' })
 }

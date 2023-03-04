@@ -1,6 +1,7 @@
-import { login } from '@/api'
+import { getMe, login } from '@/api'
 import { LoginUserSchema, UserSchema } from '@todos/shared'
-import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { create } from 'zustand'
 
 interface IAuthStore {
@@ -34,26 +35,50 @@ export const useAuth = () => {
     errors,
     setErrors,
   } = useAuthStore()
+
   const navigate = useNavigate()
+  const location = useLocation()
+
+  useEffect(() => {
+    if (user || location.pathname === '/auth') {
+      return
+    }
+    authenticateHandler()
+  }, [])
+
+  useEffect(() => {
+    if (user) {
+      setIsAuthenticated(true)
+      navigate('/')
+      return
+    }
+    setIsAuthenticated(false)
+  }, [user])
+
+  const authenticateHandler = async () => {
+    try {
+      const user = await getMe()
+      if ('message' in user) {
+        throw new Error(user.message)
+      }
+      setUser(user)
+    } catch (error) {
+      setUser(null)
+      setErrors([(error as Error).message])
+      navigate('/auth')
+    }
+  }
 
   const loginHandler = async (loginCredentials: LoginUserSchema) => {
     try {
       const { user, message } = await login(loginCredentials)
       if (!user) {
-        setIsAuthenticated(false)
-        message && setErrors([message])
-        return
+        throw new Error(message)
       }
-
       setUser(user)
-      setIsAuthenticated(true)
-      setErrors(null)
-
-      navigate('/')
     } catch (error) {
-      setIsAuthenticated(false)
-      const message = (error as Error)?.message
-      message && setErrors([message])
+      setUser(null)
+      setErrors([(error as Error).message])
     }
   }
 
