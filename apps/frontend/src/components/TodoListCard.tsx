@@ -1,9 +1,9 @@
 import { createTodo, deleteTodo, getTodos, updateTodo } from '@/api'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { GetTodosSchema, todoSchema, TodoSchema } from '@todos/shared'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { z } from 'zod'
 import { Button, Card, Input, TodoItem, TodoList } from '.'
 
@@ -17,6 +17,7 @@ interface ITodoListCardProps {
 
 export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
   const queryClient = useQueryClient()
+
   const [filters, setFilters] = useState<GetTodosSchema>({})
 
   const {
@@ -110,15 +111,14 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
     onMutate: async newTodo => {
       return await getOptimisticTodos(previousTodos => {
         if (!previousTodos) return []
-        return [
-          ...previousTodos,
-          {
-            id: previousTodos[previousTodos.length - 1].id + 1,
-            completed: false,
-            createdAt: '',
-            ...newTodo,
-          },
-        ]
+
+        const optimisticTodo = {
+          id: previousTodos[previousTodos.length - 1].id + 1,
+          completed: false,
+          createdAt: '',
+          ...newTodo,
+        }
+        return [...previousTodos, optimisticTodo]
       })
     },
   })

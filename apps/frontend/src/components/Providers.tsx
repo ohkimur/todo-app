@@ -1,5 +1,5 @@
-import { QueryClient, QueryClientProvider } from 'react-query'
-import { ReactQueryDevtools } from 'react-query/devtools'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { BrowserRouter } from 'react-router-dom'
 
 const queryClient = new QueryClient()
@@ -13,7 +13,7 @@ export const Providers = ({ children }: IProvidersProps) => {
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         {children}
-        <ReactQueryDevtools />
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </BrowserRouter>
   )
