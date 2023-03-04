@@ -1,13 +1,7 @@
 {
   "version": 2,
   "buildCommand": "cd ../.. && pnpm build:backend",
-  "builds": [
-    {
-      "src": "apps/backend/dist/cjs/index.js",
-      "use": "@vercel/node",
-      "config": { "includeFiles": ["apps/backend/dist/**"] }
-    }
-  ],
+  "devCommand": "cd ../.. && pnpm dev:backend",
   "routes": [
     {
       "src": "/(.*)",
