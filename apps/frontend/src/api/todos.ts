@@ -10,7 +10,8 @@ import { API_BASEPATH } from '.'
 
 const todosSchema = z.array(todoSchema)
 
-export const getTodos = async ({ completed }: GetTodosSchema) => {
+export const getTodos = async (filters?: GetTodosSchema) => {
+  const { completed } = filters || {}
   const response = await fetch(
     `${API_BASEPATH}/todos?${
       completed !== undefined ? `completed=${completed}` : ''

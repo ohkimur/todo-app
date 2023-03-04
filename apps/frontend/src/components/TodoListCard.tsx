@@ -1,14 +1,15 @@
-import { createTodo, deleteTodo, getTodos, updateTodo } from '@/api'
+import { getTodos } from '@/api'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { GetTodosSchema, todoSchema, TodoSchema } from '@todos/shared'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  CreateTodoSchema,
+  createTodoSchema,
+  GetTodosSchema,
+  TodoSchema,
+} from '@todos/shared'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { z } from 'zod'
 import { Button, Card, Input, TodoItem, TodoList } from '.'
-
-const justTodoTileSchema = todoSchema.pick({ title: true })
-type TJustTodoTitle = z.infer<typeof justTodoTileSchema>
 
 interface ITodoListCardProps {
   title?: string
@@ -25,106 +26,35 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<TJustTodoTitle>({
-    resolver: zodResolver(justTodoTileSchema),
+  } = useForm<CreateTodoSchema>({
+    resolver: zodResolver(createTodoSchema),
   })
 
-  const { data: todos, isLoading } = useQuery<TodoSchema[]>(
-    ['todos', filters],
-    async ({ queryKey }) => {
-      const [_, currentFilters] = queryKey as [unknown, GetTodosSchema]
-      return getTodos(currentFilters as GetTodosSchema)
-    },
-    {
-      initialData: [],
-    }
-  )
+  // const { data: todos, isLoading } = useQuery<TodoSchema[]>(
+  //   ['todos', filters],
+  //   async ({ queryKey }) => {
+  //     const [_, currentFilters] = queryKey as [unknown, GetTodosSchema]
+  //     return getTodos(currentFilters as GetTodosSchema)
+  //   },
+  //   {
+  //     initialData: [],
+  //   }
+  // )
 
-  const getOptimisticTodos = async (
-    setOptimisticQueryData: (
-      previousTodos: TodoSchema[] | undefined
-    ) => TodoSchema[]
-  ) => {
-    // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
-    await queryClient.cancelQueries(['todos', filters])
-
-    // Snapshot the previous value
-    const previousTodos = queryClient.getQueryData<TodoSchema[]>([
-      'todos',
-      filters,
-    ])
-
-    // Optimistically update to the new value
-    queryClient.setQueryData<TodoSchema[]>(
-      ['todos', filters],
-      setOptimisticQueryData
-    )
-
-    // Return a context object with the snapshotted value
-    return { previousTodos }
-  }
-
-  const onOptimisticError = (
-    _error: unknown,
-    _newTodo: unknown,
-    context: { previousTodos: TodoSchema[] | undefined } | undefined
-  ) => {
-    queryClient.setQueryData(['todos', filters], context?.previousTodos || [])
-  }
-
-  const onOptimisticSettled = () => {
-    queryClient.invalidateQueries(['todos', filters])
-  }
-
-  const { mutate: updateTodoWithMutation } = useMutation(updateTodo, {
-    onMutate: async updatedTodo => {
-      return await getOptimisticTodos(previousTodos => {
-        const updatedTodos =
-          previousTodos?.map(todo =>
-            todo.id === updatedTodo.id ? { ...todo, ...updatedTodo } : todo
-          ) || []
-
-        if (filters.completed !== undefined) {
-          return updatedTodos.filter(
-            todo => todo.completed === filters.completed
-          )
-        }
-
-        return updatedTodos
-      })
-    },
-    onError: onOptimisticError,
-    onSettled: onOptimisticSettled,
-  })
-
-  const { mutate: deleteTodoWithMutation } = useMutation(deleteTodo, {
-    onMutate: async deletedTodoId => {
-      return await getOptimisticTodos(previousTodos => {
-        return previousTodos?.filter(todo => todo.id !== deletedTodoId) || []
-      })
-    },
-    onError: onOptimisticError,
-    onSettled: onOptimisticSettled,
-  })
-
-  const { mutate: createTodoWithMutation } = useMutation(createTodo, {
-    onMutate: async newTodo => {
-      return await getOptimisticTodos(previousTodos => {
-        if (!previousTodos) return []
-
-        const optimisticTodo = {
-          id: previousTodos[previousTodos.length - 1].id + 1,
-          completed: false,
-          createdAt: '',
-          ...newTodo,
-        }
-        return [...previousTodos, optimisticTodo]
-      })
+  const {
+    isLoading,
+    isError,
+    data: todos,
+    error,
+  } = useQuery<TodoSchema[]>({
+    queryKey: ['todos', filters],
+    queryFn: async ({ queryKey }) => {
+      const [_key, filters] = queryKey as [unknown, GetTodosSchema]
+      return getTodos(filters)
     },
   })
 
-  const onSubmit: SubmitHandler<TJustTodoTitle> = data => {
-    createTodoWithMutation({ title: data.title })
+  const onSubmit: SubmitHandler<CreateTodoSchema> = data => {
     reset()
   }
 
@@ -149,13 +79,10 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
               key={id}
               title={title}
               checked={completed}
-              onChange={e =>
-                updateTodoWithMutation({
-                  id: Number(e.target.id),
-                  completed: e.target.checked,
-                })
-              }
-              onDelete={() => deleteTodoWithMutation(id)}
+              onChange={_e => {
+                console.log('TODO: update todo')
+              }}
+              onDelete={() => console.log('TODO: delete todo')}
               disabled={isLoading}
             >
               {title}
