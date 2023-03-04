@@ -25,6 +25,8 @@ export const AuthForm = ({ action = 'login' }: IAuthFormProps) => {
   const [title, setTitle] = useState('Welcome back!')
   const [subTitle, setSubTitle] = useState('Log in to continue.')
 
+  const [isLoading, setIsLoading] = useState(false)
+
   const {
     register,
     handleSubmit,
@@ -37,11 +39,15 @@ export const AuthForm = ({ action = 'login' }: IAuthFormProps) => {
   })
 
   const onSubmit: SubmitHandler<RegisterUserSchema> = async data => {
+    setIsLoading(true)
+
     if (localAction === 'login') {
       await loginHandler(data)
     } else if (localAction === 'register') {
       await registerHandler(data)
     }
+
+    setIsLoading(false)
   }
 
   useEffect(() => {
@@ -156,7 +162,7 @@ export const AuthForm = ({ action = 'login' }: IAuthFormProps) => {
           </span>
         )}
 
-        <Button type='submit' fullWidth className='mt-12'>
+        <Button type='submit' fullWidth className='mt-12' disabled={isLoading}>
           {localAction === 'login' ? 'Log In' : 'Sign Up'}
         </Button>
       </form>
