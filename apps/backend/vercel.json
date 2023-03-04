@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "buildCommand": "cd ../.. && pnpm build:backend",
   "builds": [
     {
       "src": "apps/backend/dist/cjs/index.js",
