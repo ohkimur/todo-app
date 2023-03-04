@@ -2,5 +2,6 @@
   "version": 2,
   "buildCommand": "cd ../.. && pnpm build:backend",
   "devCommand": "cd ../.. && pnpm dev:backend",
+  "outputDirectory": "dest",
   "rewrites": [{ "source": "/api/v1/(.*)", "destination": "/api/v1" }]
 }
