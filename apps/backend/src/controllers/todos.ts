@@ -38,8 +38,6 @@ export const getTodos = async (
         ? req.query.completed === 'true'
         : undefined
 
-    console.log(completed)
-
     const todos = await prisma.todo.findMany({
       where: {
         userId: req.user.id,
