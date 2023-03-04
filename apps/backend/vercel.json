@@ -1,6 +1,6 @@
 {
   "version": 2,
   "buildCommand": "cd ../.. && pnpm build:backend",
-  "devCommand": "cd ../.. && pnpm dev:backend",
+  "devCommand": "pnpm dev",
   "rewrites": [{ "source": "/api/v1/(.*)", "destination": "/api/v1" }]
 }
