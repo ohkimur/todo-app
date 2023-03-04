@@ -5,7 +5,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "apps/backend/dist/cjs/index.js"
+      "dest": "dist/cjs/index.js"
     }
   ]
 }
