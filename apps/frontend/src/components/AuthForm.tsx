@@ -58,6 +58,7 @@ export const AuthForm = ({ action = 'login' }: IAuthFormProps) => {
       setTitle('Welcome!')
       setSubTitle('Sign up to start using Todos.')
     }
+
     window.history.replaceState({}, '', `/${localAction}`)
   }, [localAction])
 

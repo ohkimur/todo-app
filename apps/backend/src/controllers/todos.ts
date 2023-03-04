@@ -33,9 +33,12 @@ export const getTodos = async (
   next: NextFunction
 ) => {
   try {
+    const completed =
+      req.query.completed !== '' ? req.query.completed === 'true' : undefined
     const todos = await prisma.todo.findMany({
       where: {
         userId: req.user.id,
+        completed,
       },
     })
     res.json(todos)

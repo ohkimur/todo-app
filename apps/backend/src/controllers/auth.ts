@@ -28,7 +28,7 @@ export const login = async (
     if (!user) {
       throw new CustomError({
         statusCode: 401,
-        message: 'Invalid credentials',
+        message: 'Account does not exist',
       })
     }
 

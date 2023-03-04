@@ -30,3 +30,9 @@ export type CreateTodoSchema = z.infer<typeof createTodoSchema>
 export const updateTodoSchema = createTodoSchema.partial().strip()
 
 export type UpdateTodoSchema = z.infer<typeof updateTodoSchema>
+
+export const getTodosSchema = z.object({
+  completed: z.boolean().optional(),
+})
+
+export type GetTodosSchema = z.infer<typeof getTodosSchema>
