@@ -4,21 +4,29 @@ import { json, urlencoded } from 'body-parser'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import dotenv from 'dotenv'
-import express, { Request, Response } from 'express'
+import express from 'express'
 
 dotenv.config()
 
 const app = express()
 const port = process.env.PORT || 3000
 
-app.use(cors())
+const FRONTEND_PROD_URL =
+  process.env.FRONTEND_PROD_URL || 'https://todo-app-frontend.vercel.app'
+const FRONTEND_DEV_URL = process.env.FRONTEND_DEV_URL || 'http://localhost:5173'
+
+const corsOptions = {
+  origin:
+    process.env.NODE_ENV === 'production'
+      ? FRONTEND_PROD_URL
+      : FRONTEND_DEV_URL,
+  credentials: true,
+}
+
 app.use(json())
 app.use(cookieParser())
+app.use(cors(corsOptions))
 app.use(urlencoded({ extended: true }))
-
-app.get('/', (_req: Request, res: Response) => {
-  res.send('Hello World!')
-})
 
 // Use the routes
 app.use('/api/v1', authRouter)

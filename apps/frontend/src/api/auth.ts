@@ -1,17 +1,13 @@
-import { LoginUserSchema } from '@todos/shared'
+import { LoginUserSchema, userSchema } from '@todos/shared'
+import { z } from 'zod'
 import { API_BASEPATH } from '.'
 
-export const getToken = () => {
-  return sessionStorage.getItem('token')
-}
-
-export const setToken = (token?: string) => {
-  if (!token) {
-    sessionStorage.removeItem('token')
-    return
-  }
-  sessionStorage.setItem('token', token)
-}
+const loginReturnSchema = z
+  .object({
+    user: userSchema.optional(),
+    message: z.string().optional(),
+  })
+  .strip()
 
 export const login = async (loginCredentials: LoginUserSchema) => {
   const response = await fetch(`${API_BASEPATH}/auth/login`, {
@@ -19,8 +15,9 @@ export const login = async (loginCredentials: LoginUserSchema) => {
     headers: {
       'Content-Type': 'application/json',
     },
+    credentials: 'include',
     body: JSON.stringify(loginCredentials),
   })
   const json = await response.json()
-  return json
+  return loginReturnSchema.parse(json)
 }

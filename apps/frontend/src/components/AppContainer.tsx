@@ -12,7 +12,7 @@ export const AppContainer = ({
   return (
     <div
       className={cx(
-        'bg-light-grey min-h-screen flex items-center justify-center',
+        'bg-gray-100 min-h-screen flex items-center justify-center',
         {
           [className]: className,
         }

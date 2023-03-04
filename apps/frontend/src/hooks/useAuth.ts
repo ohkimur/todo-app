@@ -1,5 +1,6 @@
 import { login } from '@/api'
-import { UserSchema } from '@todos/shared'
+import { LoginUserSchema, UserSchema } from '@todos/shared'
+import { useNavigate } from 'react-router-dom'
 import { create } from 'zustand'
 
 interface IAuthStore {
@@ -8,6 +9,9 @@ interface IAuthStore {
 
   user: UserSchema | null
   setUser: (user: UserSchema | null) => void
+
+  errors: string[] | null
+  setErrors: (error: string[] | null) => void
 }
 
 const useAuthStore = create<IAuthStore>(set => ({
@@ -16,13 +20,47 @@ const useAuthStore = create<IAuthStore>(set => ({
 
   user: null,
   setUser: user => set({ user }),
+
+  errors: null,
+  setErrors: errors => set({ errors }),
 }))
 
 export const useAuth = () => {
-  const { isAuthenticated, user, setUser } = useAuthStore()
+  const {
+    isAuthenticated,
+    setIsAuthenticated,
+    user,
+    setUser,
+    errors,
+    setErrors,
+  } = useAuthStore()
+  const navigate = useNavigate()
+
+  const loginHandler = async (loginCredentials: LoginUserSchema) => {
+    try {
+      const { user, message } = await login(loginCredentials)
+      if (!user) {
+        setIsAuthenticated(false)
+        message && setErrors([message])
+        return
+      }
+
+      setUser(user)
+      setIsAuthenticated(true)
+      setErrors(null)
+
+      navigate('/')
+    } catch (error) {
+      setIsAuthenticated(false)
+      const message = (error as Error)?.message
+      message && setErrors([message])
+    }
+  }
 
   return {
     isAuthenticated,
-    login,
+    user,
+    errors,
+    login: loginHandler,
   }
 }

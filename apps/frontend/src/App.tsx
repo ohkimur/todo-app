@@ -1,16 +1,20 @@
 import { AppContainer, AuthForm, TodoListCard } from '@/components'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-
-const router = createBrowserRouter([
-  { path: '/', element: <TodoListCard title='Todo List' /> },
-  { path: '/login', element: <AuthForm /> },
-  { path: '/register', element: <AuthForm /> },
-])
+import { useAuth } from '@/hooks'
+import { Route, Routes } from 'react-router-dom'
 
 const App = () => {
+  const { isAuthenticated } = useAuth()
   return (
     <AppContainer className='relative'>
-      <RouterProvider router={router} />
+      <Routes>
+        <Route path='/' element={<TodoListCard title='Todo List' />} />
+        {!isAuthenticated ? (
+          <>
+            <Route path='/login' element={<AuthForm />} />
+            <Route path='/register' element={<AuthForm />} />
+          </>
+        ) : null}
+      </Routes>
     </AppContainer>
   )
 }

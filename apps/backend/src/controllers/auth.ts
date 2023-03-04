@@ -46,6 +46,12 @@ export const login = async (
       .cookie('token', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
+        maxAge: 1000 * 60 * 60 * 24,
+        sameSite: 'strict',
+      })
+      .cookie('isAuthenticated', true, {
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 1000 * 60 * 60 * 24,
         sameSite: 'strict',
       })
       .json({
@@ -96,6 +102,12 @@ export const register = async (
       .cookie('token', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
+        maxAge: 1000 * 60 * 60 * 24,
+        sameSite: 'strict',
+      })
+      .cookie('isAuthenticated', true, {
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 1000 * 60 * 60 * 24,
         sameSite: 'strict',
       })
       .json({

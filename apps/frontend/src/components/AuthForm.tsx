@@ -28,10 +28,8 @@ export const AuthForm = () => {
   })
 
   const onSubmit: SubmitHandler<RegisterUserSchema> = async data => {
-    console.log(data)
     if (action === 'login') {
-      const res = await login(data)
-      console.log(res)
+      await login(data)
     }
   }
 
@@ -74,7 +72,7 @@ export const AuthForm = () => {
         <div className='flex flex-col w-full gap-2'>
           <Input
             type={'text'}
-            placeholder='email'
+            placeholder='Email'
             fullWidth
             {...register('email')}
           />
@@ -87,7 +85,7 @@ export const AuthForm = () => {
         <div className='flex flex-col w-full gap-2'>
           <Input
             type={'password'}
-            placeholder='password'
+            placeholder='Password'
             fullWidth
             {...register('password')}
           />
@@ -101,7 +99,7 @@ export const AuthForm = () => {
           <div className='flex flex-col w-full gap-2'>
             <Input
               type={'password'}
-              placeholder='confirmPassword'
+              placeholder='Confirm Password'
               fullWidth
               {...register('confirmPassword')}
             />
@@ -127,7 +125,7 @@ export const AuthForm = () => {
           </span>
         ) : (
           <span className='flex gap-2'>
-            Do have an account?
+            Already have an account?
             <Button
               type='button'
               styleType='link'
