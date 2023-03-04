@@ -52,3 +52,15 @@ export const updateTodo = async (todo: UpdateTodoSchema) => {
   const json = await response.json()
   return todoSchema.parse(json)
 }
+
+export const deleteTodo = async (id: number) => {
+  const response = await fetch(`${API_BASEPATH}/todos/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+  })
+  const json = await response.json()
+  return todoSchema.parse(json)
+}

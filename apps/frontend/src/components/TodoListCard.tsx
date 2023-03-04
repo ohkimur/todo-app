@@ -1,4 +1,4 @@
-import { createTodo, getTodos, updateTodo } from '@/api'
+import { createTodo, deleteTodo, getTodos, updateTodo } from '@/api'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { todoSchema, TodoSchema } from '@todos/shared'
 import { useState } from 'react'
@@ -29,12 +29,10 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
     ['todos', filter],
     async ({ queryKey }) => {
       const [_, currentFilter] = queryKey as [string, Filter]
-      let completed: boolean | undefined = undefined
-      if (currentFilter === 'completed') {
-        completed = true
-      } else if (currentFilter === 'uncompleted') {
-        completed = false
-      }
+      const completed =
+        currentFilter === 'completed' || currentFilter === 'uncompleted'
+          ? currentFilter === 'completed'
+          : undefined
       return getTodos({ completed })
     },
     {
@@ -61,11 +59,11 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
     }
   }
 
-  const handleTodoDelete = async (_id: number) => {
-    // const deletedTodo = await deleteTodo(id)
-    // if (deletedTodo) {
-    //   refetch()
-    // }
+  const handleTodoDelete = async (id: number) => {
+    const deletedTodo = await deleteTodo(id)
+    if (deletedTodo) {
+      refetch()
+    }
   }
 
   const handleTodoCreate = async (title: string) => {
