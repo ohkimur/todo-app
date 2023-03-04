@@ -1,6 +1,6 @@
-import { getTodos } from '@/api'
+import { createTodo, deleteTodo, getTodos, updateTodo } from '@/api'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   CreateTodoSchema,
   createTodoSchema,
@@ -30,17 +30,6 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
     resolver: zodResolver(createTodoSchema),
   })
 
-  // const { data: todos, isLoading } = useQuery<TodoSchema[]>(
-  //   ['todos', filters],
-  //   async ({ queryKey }) => {
-  //     const [_, currentFilters] = queryKey as [unknown, GetTodosSchema]
-  //     return getTodos(currentFilters as GetTodosSchema)
-  //   },
-  //   {
-  //     initialData: [],
-  //   }
-  // )
-
   const {
     isLoading,
     isError,
@@ -48,13 +37,85 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
     error,
   } = useQuery<TodoSchema[]>({
     queryKey: ['todos', filters],
-    queryFn: async ({ queryKey }) => {
-      const [_key, filters] = queryKey as [unknown, GetTodosSchema]
-      return getTodos(filters)
+    queryFn: () => getTodos(filters),
+    initialData: [],
+  })
+
+  // INFO: More info about optimistic updates: https://tanstack.com/query/v4/docs/react/guides/optimistic-updates
+  const { mutate: createTodoWithMutation } = useMutation({
+    mutationFn: createTodo,
+    onMutate: async newTodo => {
+      await queryClient.cancelQueries({ queryKey: ['todos', filters] })
+      const previousTodos = queryClient.getQueryData(['todos', filters])
+
+      queryClient.setQueryData<TodoSchema[]>(['todos', filters], oldTodos => {
+        const optimisticId = oldTodos ? oldTodos[oldTodos.length - 1].id + 1 : 1
+        const optimisticNewTodo = {
+          ...newTodo,
+          id: optimisticId,
+          completed: false,
+          createdAt: new Date().toISOString(),
+        }
+        return [...(oldTodos || []), optimisticNewTodo]
+      })
+
+      return { previousTodos }
+    },
+    onError: (_err, _newTodo, context) => {
+      queryClient.setQueryData(['todos', filters], context?.previousTodos)
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['todos', filters] })
     },
   })
 
-  const onSubmit: SubmitHandler<CreateTodoSchema> = data => {
+  const { mutate: deleteTodoWithMutation } = useMutation({
+    mutationFn: deleteTodo,
+    onMutate: async todoId => {
+      await queryClient.cancelQueries({ queryKey: ['todos', filters] })
+      const previousTodos = queryClient.getQueryData(['todos', filters])
+
+      queryClient.setQueryData<TodoSchema[]>(['todos', filters], oldTodos => {
+        return oldTodos?.filter(todo => todo.id !== todoId)
+      })
+
+      return { previousTodos }
+    },
+    onError: (_err, _todoId, context) => {
+      queryClient.setQueryData(['todos', filters], context?.previousTodos)
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['todos', filters] })
+    },
+  })
+
+  const { mutate: updateTodoWithMutation } = useMutation({
+    mutationFn: updateTodo,
+    onMutate: async updatedTodo => {
+      await queryClient.cancelQueries({ queryKey: ['todos', filters] })
+      const previousTodos = queryClient.getQueryData(['todos', filters])
+
+      queryClient.setQueryData<TodoSchema[]>(['todos', filters], oldTodos => {
+        return oldTodos?.map(todo => {
+          if (todo.id === updatedTodo.id) {
+            return { ...todo, ...updatedTodo }
+          }
+          return todo
+        })
+      })
+
+      return { previousTodos }
+    },
+    onError: (_err, _todo, context) => {
+      queryClient.setQueryData(['todos', filters], context?.previousTodos)
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['todos', filters] })
+    },
+  })
+
+  const onSubmit: SubmitHandler<CreateTodoSchema> = newTodo => {
+    createTodoWithMutation(newTodo)
     reset()
   }
 
@@ -79,10 +140,13 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
               key={id}
               title={title}
               checked={completed}
-              onChange={_e => {
-                console.log('TODO: update todo')
+              onChange={e => {
+                updateTodoWithMutation({
+                  id: Number(e.target.id),
+                  completed: e.target.checked,
+                })
               }}
-              onDelete={() => console.log('TODO: delete todo')}
+              onDelete={() => deleteTodoWithMutation(id)}
               disabled={isLoading}
             >
               {title}
@@ -92,6 +156,10 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
           <p>No toods.</p>
         )}
       </TodoList>
+
+      {isError && (
+        <span className='text-red-500'>{(error as Error)?.message}</span>
+      )}
 
       <footer className='flex gap-3 mt-12'>
         <span>Show:</span>
