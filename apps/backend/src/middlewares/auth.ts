@@ -10,11 +10,11 @@ export const authenticate = async (
   next: NextFunction
 ) => {
   try {
-    const token = req.headers.authorization?.split(' ')[1]
+    const token = req.cookies.token
     if (!token) {
       throw new CustomError({
         statusCode: 401,
-        message: 'No token provided',
+        message: 'Unauthorized',
       })
     }
 

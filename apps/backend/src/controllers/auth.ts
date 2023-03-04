@@ -6,6 +6,12 @@ import argon2 from 'argon2'
 import { NextFunction, Response } from 'express'
 import jwt from 'jsonwebtoken'
 
+const createToken = (user: LoginUserSchema) => {
+  return jwt.sign({ email: user.email }, String(process.env.JWT_SECRET), {
+    expiresIn: '1d',
+  })
+}
+
 export const login = async (
   req: ICustomRequest<LoginUserSchema>,
   res: Response,
@@ -34,23 +40,22 @@ export const login = async (
       })
     }
 
-    const token = jwt.sign(
-      { email: user.email },
-      String(process.env.JWT_SECRET),
-      {
-        expiresIn: '1d',
-      }
-    )
+    const token = createToken(user)
 
-    res.json({
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-      },
-      token,
-      message: 'Login successful',
-    })
+    res
+      .cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+      })
+      .json({
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+        },
+        message: 'Login successful',
+      })
   } catch (error) {
     next(error)
   }
@@ -85,23 +90,22 @@ export const register = async (
       },
     })
 
-    const token = jwt.sign(
-      { email: newUser.email },
-      String(process.env.JWT_SECRET),
-      {
-        expiresIn: '1d',
-      }
-    )
+    const token = createToken(newUser)
 
-    res.json({
-      user: {
-        id: newUser.id,
-        name: newUser.name,
-        email: newUser.email,
-      },
-      token,
-      message: 'User created successfully',
-    })
+    res
+      .cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+      })
+      .json({
+        user: {
+          id: newUser.id,
+          name: newUser.name,
+          email: newUser.email,
+        },
+        message: 'Registration successful',
+      })
   } catch (error) {
     next(error)
   }
