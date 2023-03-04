@@ -78,10 +78,18 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
   const { mutate: updateTodoWithMutation } = useMutation(updateTodo, {
     onMutate: async updatedTodo => {
       return await getOptimisticTodos(previousTodos => {
-        if (!previousTodos) return []
-        return previousTodos.map(todo =>
-          todo.id === updatedTodo.id ? { ...todo, ...updatedTodo } : todo
-        )
+        const updatedTodos =
+          previousTodos?.map(todo =>
+            todo.id === updatedTodo.id ? { ...todo, ...updatedTodo } : todo
+          ) || []
+
+        if (filters.completed !== undefined) {
+          return updatedTodos.filter(
+            todo => todo.completed === filters.completed
+          )
+        }
+
+        return updatedTodos
       })
     },
     onError: onOptimisticError,
@@ -91,8 +99,7 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
   const { mutate: deleteTodoWithMutation } = useMutation(deleteTodo, {
     onMutate: async deletedTodoId => {
       return await getOptimisticTodos(previousTodos => {
-        if (!previousTodos) return []
-        return previousTodos.filter(todo => todo.id !== deletedTodoId)
+        return previousTodos?.filter(todo => todo.id !== deletedTodoId) || []
       })
     },
     onError: onOptimisticError,
@@ -105,7 +112,12 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
         if (!previousTodos) return []
         return [
           ...previousTodos,
-          { id: 0, completed: false, createdAt: '', ...newTodo },
+          {
+            id: previousTodos[previousTodos.length - 1].id + 1,
+            completed: false,
+            createdAt: '',
+            ...newTodo,
+          },
         ]
       })
     },
