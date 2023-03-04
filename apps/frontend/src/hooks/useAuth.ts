@@ -1,4 +1,4 @@
-import { getMe, login } from '@/api'
+import { getMe, login, register } from '@/api'
 import { LoginUserSchema, UserSchema } from '@todos/shared'
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -40,10 +40,9 @@ export const useAuth = () => {
   const location = useLocation()
 
   useEffect(() => {
-    if (user || location.pathname === '/auth') {
-      return
+    if (!user) {
+      authenticateHandler()
     }
-    authenticateHandler()
   }, [])
 
   useEffect(() => {
@@ -55,6 +54,10 @@ export const useAuth = () => {
     setIsAuthenticated(false)
   }, [user])
 
+  useEffect(() => {
+    console.log(isAuthenticated)
+  }, [isAuthenticated])
+
   const authenticateHandler = async () => {
     try {
       const user = await getMe()
@@ -64,8 +67,11 @@ export const useAuth = () => {
       setUser(user)
     } catch (error) {
       setUser(null)
-      setErrors([(error as Error).message])
-      navigate('/auth')
+
+      if (location.pathname !== '/login' && location.pathname !== '/register') {
+        setErrors([(error as Error).message])
+        navigate('/login')
+      }
     }
   }
 
@@ -82,10 +88,24 @@ export const useAuth = () => {
     }
   }
 
+  const registerHandler = async (registerCredentials: LoginUserSchema) => {
+    try {
+      const { user, message } = await register(registerCredentials)
+      if (!user) {
+        throw new Error(message)
+      }
+      setUser(user)
+    } catch (error) {
+      setUser(null)
+      setErrors([(error as Error).message])
+    }
+  }
+
   return {
     isAuthenticated,
     user,
     errors,
     login: loginHandler,
+    register: registerHandler,
   }
 }

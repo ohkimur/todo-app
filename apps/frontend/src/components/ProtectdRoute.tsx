@@ -8,7 +8,7 @@ interface IProtectedRoute {
 export const ProtectedRoute = ({ children }: IProtectedRoute) => {
   const { isAuthenticated } = useAuth()
   if (!isAuthenticated) {
-    return <Navigate to='/auth' replace />
+    return <Navigate to='/login' replace />
   }
   return <>{children}</>
 }

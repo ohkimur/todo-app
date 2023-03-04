@@ -23,8 +23,18 @@ const App = () => {
         />
 
         <Route
-          path='/auth'
+          path='/login'
           element={isAuthenticated ? <Navigate to='/' /> : <AuthForm />}
+        />
+        <Route
+          path='/register'
+          element={
+            isAuthenticated ? (
+              <Navigate to='/' />
+            ) : (
+              <AuthForm action='register' />
+            )
+          }
         />
         <Route path='*' element={<Navigate to='/' replace />} />
       </Routes>

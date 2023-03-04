@@ -27,8 +27,8 @@ export const login = async (
     })
     if (!user) {
       throw new CustomError({
-        statusCode: 404,
-        message: 'User not found',
+        statusCode: 401,
+        message: 'Invalid credentials',
       })
     }
 

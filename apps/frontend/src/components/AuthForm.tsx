@@ -9,9 +9,18 @@ import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Button, Card, Input } from '.'
 
-export const AuthForm = () => {
-  const { login, errors: authErrors } = useAuth()
-  const [action, setAction] = useState<'login' | 'register'>('login')
+interface IAuthFormProps {
+  action?: 'login' | 'register'
+}
+
+export const AuthForm = ({ action = 'login' }: IAuthFormProps) => {
+  const {
+    login: loginHandler,
+    register: registerHandler,
+    errors: authErrors,
+  } = useAuth()
+
+  const [localAction, setLocalAction] = useState<'login' | 'register'>(action)
 
   const [title, setTitle] = useState('Welcome back!')
   const [subTitle, setSubTitle] = useState('Log in to continue.')
@@ -23,25 +32,28 @@ export const AuthForm = () => {
     clearErrors,
   } = useForm<RegisterUserSchema>({
     resolver: zodResolver(
-      action === 'login' ? loginUserSchema : registerUserSchema
+      localAction === 'login' ? loginUserSchema : registerUserSchema
     ),
   })
 
   const onSubmit: SubmitHandler<RegisterUserSchema> = async data => {
-    if (action === 'login') {
-      await login(data)
+    if (localAction === 'login') {
+      await loginHandler(data)
+    } else if (localAction === 'register') {
+      await registerHandler(data)
     }
   }
 
   useEffect(() => {
-    if (action === 'login') {
+    if (localAction === 'login') {
       setTitle('Welcome back!')
       setSubTitle('Log in to continue.')
     } else {
       setTitle('Welcome!')
       setSubTitle('Sign up to start using Todos.')
     }
-  }, [action])
+    window.history.replaceState({}, '', `/${localAction}`)
+  }, [localAction])
 
   useEffect(() => {
     clearErrors()
@@ -62,7 +74,7 @@ export const AuthForm = () => {
         )}
 
         {/* Name */}
-        {action === 'register' ? (
+        {localAction === 'register' ? (
           <div className='flex flex-col w-full gap-2'>
             <Input
               type={'text'}
@@ -103,7 +115,7 @@ export const AuthForm = () => {
         </div>
 
         {/* Confirm Password */}
-        {action === 'register' ? (
+        {localAction === 'register' ? (
           <div className='flex flex-col w-full gap-2'>
             <Input
               type={'password'}
@@ -120,13 +132,13 @@ export const AuthForm = () => {
         ) : null}
 
         {/* Toggle between login and register */}
-        {action === 'login' ? (
+        {localAction === 'login' ? (
           <span className='flex gap-2'>
             Don't have an account?
             <Button
               type='button'
               styleType='link'
-              onClick={() => setAction('register')}
+              onClick={() => setLocalAction('register')}
             >
               Sign up
             </Button>
@@ -137,7 +149,7 @@ export const AuthForm = () => {
             <Button
               type='button'
               styleType='link'
-              onClick={() => setAction('login')}
+              onClick={() => setLocalAction('login')}
             >
               Sign in
             </Button>
@@ -145,7 +157,7 @@ export const AuthForm = () => {
         )}
 
         <Button type='submit' fullWidth className='mt-12'>
-          {action === 'login' ? 'Log In' : 'Sign Up'}
+          {localAction === 'login' ? 'Log In' : 'Sign Up'}
         </Button>
       </form>
     </Card>

@@ -17,6 +17,5 @@ export const getMe = async () => {
     credentials: 'include',
   })
   const json = await response.json()
-  const parsedJson = returnUserSchema.parse(json)
-  return parsedJson
+  return returnUserSchema.parse(json)
 }

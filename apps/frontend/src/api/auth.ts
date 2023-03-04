@@ -2,7 +2,7 @@ import { LoginUserSchema, userSchema } from '@todos/shared'
 import { z } from 'zod'
 import { API_BASEPATH } from '.'
 
-const loginReturnSchema = z.object({
+const authReturnSchema = z.object({
   user: userSchema.optional(),
   message: z.string().optional(),
 })
@@ -17,7 +17,7 @@ export const login = async (loginCredentials: LoginUserSchema) => {
     body: JSON.stringify(loginCredentials),
   })
   const json = await response.json()
-  return loginReturnSchema.parse(json)
+  return authReturnSchema.parse(json)
 }
 
 export const logout = async () => {
@@ -29,4 +29,17 @@ export const logout = async () => {
     credentials: 'include',
   })
   return response
+}
+
+export const register = async (registerCredentials: LoginUserSchema) => {
+  const response = await fetch(`${API_BASEPATH}/auth/register`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify(registerCredentials),
+  })
+  const json = await response.json()
+  return authReturnSchema.parse(json)
 }
