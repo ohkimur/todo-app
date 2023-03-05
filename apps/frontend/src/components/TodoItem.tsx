@@ -9,10 +9,11 @@ interface ITodoItemProps extends InputHTMLAttributes<HTMLInputElement> {
   onDelete?: MouseEventHandler<HTMLButtonElement>
 }
 
-export const TodoItem = forwardRef<HTMLUListElement, ITodoItemProps>(
-  ({ children, className = '', onDelete, ...props }: ITodoItemProps) => {
+export const TodoItem = forwardRef<HTMLLIElement, ITodoItemProps>(
+  ({ children, className = '', onDelete, ...props }, ref) => {
     return (
       <li
+        ref={ref}
         className={cx('flex gap-3.5 w-full justify-between group', {
           [className]: className,
         })}
