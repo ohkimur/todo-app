@@ -2,7 +2,7 @@ import { ICustomRequest } from '@/types'
 import { CustomError } from '@/utils'
 import { prisma } from '@db/client'
 import { LoginUserSchema, RegisterUserSchema } from '@todos/shared'
-// import argon2 from 'argon2'
+import argon2 from 'argon2'
 import { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 
@@ -32,8 +32,7 @@ export const login = async (
       })
     }
 
-    // const isPasswordValid = await argon2.verify(user.password, password)
-    const isPasswordValid = true
+    const isPasswordValid = await argon2.verify(user.password, password)
     if (!isPasswordValid) {
       throw new CustomError({
         statusCode: 401,
