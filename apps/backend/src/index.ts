@@ -1,4 +1,3 @@
-import { invalidRoute } from '@/middlewares'
 import dotenv from 'dotenv'
 import express from 'express'
 
@@ -36,7 +35,7 @@ app.get('/', (_req, res) => {
 // Use the error handlers
 // app.use(errorLogger)
 // app.use(errorHandler)
-app.use(invalidRoute)
+// app.use(invalidRoute)
 
 app.listen(port, () => {
   console.log(`⚡️[Server]: Server is running at http://localhost:${port}`)
