@@ -48,6 +48,10 @@ export const login = async (
         maxAge: 1000 * 60 * 60 * 24,
         sameSite: 'none',
         secure: process.env.NODE_ENV === 'production',
+        domain:
+          process.env.NODE_ENV === 'production'
+            ? process.env.DOMAIN
+            : undefined,
       })
       .json({
         user: {
@@ -72,6 +76,8 @@ export const logout = async (
       httpOnly: true,
       sameSite: 'none',
       secure: process.env.NODE_ENV === 'production',
+      domain:
+        process.env.NODE_ENV === 'production' ? process.env.DOMAIN : undefined,
     })
     .json({
       message: 'Logout successful',
@@ -116,6 +122,10 @@ export const register = async (
         maxAge: 1000 * 60 * 60 * 24,
         sameSite: 'none',
         secure: process.env.NODE_ENV === 'production',
+        domain:
+          process.env.NODE_ENV === 'production'
+            ? process.env.DOMAIN
+            : undefined,
       })
       .json({
         user: {
