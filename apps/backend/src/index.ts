@@ -1,5 +1,4 @@
-import { errorHandler, errorLogger, invalidRoute } from '@/middlewares'
-import { authRouter, todosRouter, usersRouter } from '@/routes'
+import { usersRouter } from '@/routes'
 import { json, urlencoded } from 'body-parser'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
@@ -33,14 +32,14 @@ app.get('/', (_req, res) => {
 })
 
 // Use the routes
-app.use('/api/v1', authRouter)
+// app.use('/api/v1', authRouter)
 app.use('/api/v1', usersRouter)
-app.use('/api/v1', todosRouter)
+// app.use('/api/v1', todosRouter)
 
 // Use the error handlers
-app.use(errorLogger)
-app.use(errorHandler)
-app.use(invalidRoute)
+// app.use(errorLogger)
+// app.use(errorHandler)
+// app.use(invalidRoute)
 
 app.listen(port, () => {
   console.log(`⚡️[Server]: Server is running at http://localhost:${port}`)
