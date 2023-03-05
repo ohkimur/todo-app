@@ -23,6 +23,8 @@ const corsOptions = {
   credentials: true,
 }
 
+app.enable('trust proxy')
+
 app.use(json())
 app.use(cookieParser())
 app.use(cors(corsOptions))
