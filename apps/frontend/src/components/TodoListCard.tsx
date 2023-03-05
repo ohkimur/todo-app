@@ -49,7 +49,9 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
       const previousTodos = queryClient.getQueryData(['todos', filters])
 
       queryClient.setQueryData<TodoSchema[]>(['todos', filters], oldTodos => {
-        const optimisticId = oldTodos ? oldTodos[oldTodos.length - 1].id + 1 : 1
+        const optimisticId = oldTodos?.length
+          ? oldTodos[oldTodos.length - 1].id + 1
+          : 1
         const optimisticNewTodo = {
           ...newTodo,
           id: optimisticId,
