@@ -16,7 +16,6 @@
     "dev": "turbo run dev",
     "dev:backend": "turbo run dev --filter=\"./apps/backend\"",
     "dev:frontend": "turbo run dev --filter=\"./apps/frontend\"",
-    "dev:frontend:preview": "turbo run preview --filter=\"./apps/frontend\"",
     "format": "turbo run format --no-cache --concurrency=1",
     "graph": "turbo run build --graph=graph.html",
     "preinstall": "npx only-allow pnpm",
@@ -24,6 +23,8 @@
     "lint:fix": "turbo run lint:fix --parallel",
     "lint:staged": "turbo run lint:staged --no-cache --concurrency=1",
     "release": "pnpm changeset publish && pnpm up",
+    "start:backend": "turbo run dev --filter=\"./apps/backend\"",
+    "start:frontend": "turbo run start --filter=\"./apps/frontend\"",
     "test": "turbo run test"
   },
   "devDependencies": {

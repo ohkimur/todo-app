@@ -22,6 +22,10 @@
       "cache": true,
       "dependsOn": ["^build"]
     },
+    "start": {
+      "cache": true,
+      "dependsOn": ["^build"]
+    },
     "clean": {
       "cache": false
     },
