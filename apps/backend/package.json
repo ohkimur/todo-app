@@ -21,6 +21,7 @@
     "db:seed": "tsx ./prisma/seed.ts",
     "dev": "tsx watch --clear-screen=false ./src ./src/index.ts ",
     "format": "prettier --write \"./**/*.{cjs,js,jsx,ts,tsx,css,sass,scss}\" --config ./.prettierrc.cjs",
+    "postinstall": "prisma generate",
     "lint:fix": "eslint --fix \"./**/*.{cjs,js,jsx,ts,tsx}\"",
     "lint:staged": "lint-staged"
   },
