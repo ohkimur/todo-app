@@ -1,5 +1,6 @@
 {
   "version": 2,
   "buildCommand": "cd ../.. && pnpm build:backend",
+  "outputDirectory": "dist",
   "devCommand": "pnpm dev"
 }
