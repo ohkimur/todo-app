@@ -5,7 +5,7 @@
   "devCommand": "pnpm dev",
   "builds": [
     {
-      "src": "src/server.ts",
+      "src": "src/index.ts",
       "use": "@vercel/node"
     }
   ],
