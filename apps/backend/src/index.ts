@@ -33,9 +33,9 @@ app.get('/', (_req, res) => {
 })
 
 // Use the routes
-app.use('/api/v1', authRouter)
-app.use('/api/v1', usersRouter)
-app.use('/api/v1', todosRouter)
+// app.use('/api/v1', authRouter)
+// app.use('/api/v1', usersRouter)
+// app.use('/api/v1', todosRouter)
 
 // Use the error handlers
 app.use(errorLogger)
