@@ -22,6 +22,9 @@ app.use(json())
 app.use(cookieParser())
 app.use(cors(corsOptions))
 app.use(urlencoded({ extended: true }))
+app.get('/', (_req, res) => {
+  res.send('Hey this is the todo-app API running 🥳')
+})
 // Use the routes
 app.use('/api/v1', authRouter)
 app.use('/api/v1', usersRouter)
