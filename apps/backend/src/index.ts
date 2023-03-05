@@ -1,6 +1,8 @@
 import { errorHandler, errorLogger, invalidRoute } from '@/middlewares'
 import { authRouter, todosRouter, usersRouter } from '@/routes'
-import { json } from 'body-parser'
+import { json, urlencoded } from 'body-parser'
+import cookieParser from 'cookie-parser'
+import cors from 'cors'
 import dotenv from 'dotenv'
 import express from 'express'
 
@@ -22,9 +24,9 @@ const corsOptions = {
 }
 
 app.use(json())
-// app.use(cookieParser())
-// app.use(cors(corsOptions))
-// app.use(urlencoded({ extended: true }))
+app.use(cookieParser())
+app.use(cors(corsOptions))
+app.use(urlencoded({ extended: true }))
 
 app.get('/', (_req, res) => {
   res.send('Hey this is the todo-app API running 🥳')
