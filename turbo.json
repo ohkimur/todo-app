@@ -28,6 +28,9 @@
     "preview": {
       "cache": true,
       "dependsOn": ["^build"]
+    },
+    "db:seed": {
+      "cache": false
     }
   }
 }

@@ -12,6 +12,7 @@
     "build:frontend": "turbo run build --filter=\"./apps/frontend\"",
     "ci:publish": "pnpm publish -r",
     "clean": "turbo run clean",
+    "db:seed": "turbo run db:seed --filter=\"./apps/backend\"",
     "dev": "turbo run dev",
     "dev:backend": "turbo run dev --filter=\"./apps/backend\"",
     "dev:frontend": "turbo run dev --filter=\"./apps/frontend\"",

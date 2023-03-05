@@ -4,12 +4,12 @@ import { prisma } from './client'
 const users = [
   {
     name: 'admin',
-    email: 'admin@gmail.com',
+    email: 'admin@test.com',
     password: 'admin123',
   },
   {
     name: 'Test',
-    email: 'test@gmail.com',
+    email: 'test@test.com',
     password: 'test123',
   },
 ]
