@@ -47,7 +47,6 @@ export const login = async (
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         maxAge: 1000 * 60 * 60 * 24,
-        sameSite: 'strict',
       })
       .json({
         user: {
@@ -71,7 +70,6 @@ export const logout = async (
     .clearCookie('token', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
     })
     .json({
       message: 'Logout successful',
