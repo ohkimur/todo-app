@@ -3,5 +3,11 @@
   "buildCommand": "cd ../.. && pnpm build:backend",
   "outputDirectory": "dist",
   "devCommand": "pnpm dev",
+  "functions": {
+    "dist/cjs/src/index.js": {
+      "memory": 3008,
+      "maxDuration": 30
+    }
+  },
   "rewrites": [{ "source": "/api/(.*)", "destination": "/api" }]
 }
