@@ -70,6 +70,8 @@ export const logout = async (
   res
     .clearCookie('token', {
       httpOnly: true,
+      sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
     })
     .json({
       message: 'Logout successful',
