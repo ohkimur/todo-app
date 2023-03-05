@@ -1,4 +1,4 @@
-import { errorHandler, errorLogger, invalidRoute } from '@/middlewares'
+import { invalidRoute } from '@/middlewares'
 import dotenv from 'dotenv'
 import express from 'express'
 
@@ -34,8 +34,8 @@ app.get('/', (_req, res) => {
 // app.use('/api/v1', todosRouter)
 
 // Use the error handlers
-app.use(errorLogger)
-app.use(errorHandler)
+// app.use(errorLogger)
+// app.use(errorHandler)
 app.use(invalidRoute)
 
 app.listen(port, () => {
