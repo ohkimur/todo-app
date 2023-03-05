@@ -3,7 +3,16 @@
   "buildCommand": "cd ../.. && pnpm build:backend",
   "outputDirectory": "dist",
   "devCommand": "pnpm dev",
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/dist/cjs/src/index.js" }
+  "builds": [
+    {
+      "src": "src/server.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "src/index.ts"
+    }
   ]
 }
