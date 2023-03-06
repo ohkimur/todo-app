@@ -23,7 +23,7 @@
     "lint:fix": "turbo run lint:fix --parallel",
     "lint:staged": "turbo run lint:staged --no-cache --concurrency=1",
     "release": "pnpm changeset publish && pnpm up",
-    "start:backend": "turbo run dev --filter=\"./apps/backend\"",
+    "start:backend": "turbo run start --filter=\"./apps/backend\"",
     "start:frontend": "turbo run start --filter=\"./apps/frontend\"",
     "test": "turbo run test"
   },
