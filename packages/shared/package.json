@@ -39,7 +39,7 @@
     "package.json": "sort-package-json"
   },
   "dependencies": {
-    "zod": "^3.21.0"
+    "zod": "^3.21.3"
   },
   "devDependencies": {
     "@todos/config": "workspace:0.0.1",
