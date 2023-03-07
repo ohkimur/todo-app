@@ -1,8 +1,11 @@
 import { getMe, login, logout, register } from '@/api'
 import { LoginUserSchema, UserSchema } from '@todos/shared'
+import Cookies from 'js-cookie'
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { create } from 'zustand'
+
+const hasAuthToken = () => !!Cookies.get('hasAuthToken')
 
 interface IAuthStore {
   isAuthenticated: boolean
@@ -16,7 +19,7 @@ interface IAuthStore {
 }
 
 const useAuthStore = create<IAuthStore>(set => ({
-  isAuthenticated: false,
+  isAuthenticated: hasAuthToken(),
   setIsAuthenticated: isAuthenticated => set({ isAuthenticated }),
 
   user: null,
@@ -40,18 +43,21 @@ export const useAuth = () => {
   const location = useLocation()
 
   useEffect(() => {
-    if (!user) {
-      authenticateHandler()
+    if (!hasAuthToken()) {
+      setIsAuthenticated(false)
+      return
     }
+    authenticateHandler()
   }, [])
 
   useEffect(() => {
-    if (user) {
+    if (user && hasAuthToken()) {
       setIsAuthenticated(true)
-      navigate('/')
+      if (location.pathname === '/login' || location.pathname === '/register') {
+        navigate('/')
+      }
       return
     }
-    setIsAuthenticated(false)
   }, [user])
 
   const authenticateHandler = async () => {
@@ -100,6 +106,7 @@ export const useAuth = () => {
   const logoutHandler = async () => {
     await logout()
     setUser(null)
+    navigate('/login')
   }
 
   return {

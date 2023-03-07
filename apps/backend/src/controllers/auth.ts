@@ -50,6 +50,12 @@ export const login = async (
         secure: true,
         domain: process.env.DOMAIN || 'localhost',
       })
+      .cookie('hasAuthToken', true, {
+        maxAge: 1000 * 60 * 60 * 24,
+        sameSite: 'none',
+        secure: true,
+        domain: process.env.DOMAIN || 'localhost',
+      })
       .json({
         user: {
           id: user.id,
@@ -71,6 +77,11 @@ export const logout = async (
   res
     .clearCookie('token', {
       httpOnly: true,
+      sameSite: 'none',
+      secure: true,
+      domain: process.env.DOMAIN || 'localhost',
+    })
+    .clearCookie('hasAuthToken', {
       sameSite: 'none',
       secure: true,
       domain: process.env.DOMAIN || 'localhost',
@@ -115,6 +126,12 @@ export const register = async (
     res
       .cookie('token', token, {
         httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24,
+        sameSite: 'none',
+        secure: true,
+        domain: process.env.DOMAIN || 'localhost',
+      })
+      .cookie('hasAuthToken', true, {
         maxAge: 1000 * 60 * 60 * 24,
         sameSite: 'none',
         secure: true,

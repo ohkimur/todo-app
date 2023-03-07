@@ -103,6 +103,7 @@ importers:
       '@tanstack/react-query-devtools': ^4.26.1
       '@todos/config': workspace:^0.0.1
       '@todos/shared': workspace:^0.0.1
+      '@types/js-cookie': ^3.0.3
       '@types/react': ^18.0.28
       '@types/react-dom': ^18.0.11
       '@typescript-eslint/eslint-plugin': ^5.54.1
@@ -114,6 +115,7 @@ importers:
       eslint-config-prettier: ^8.7.0
       eslint-plugin-prettier: ^4.2.1
       eslint-plugin-react: ^7.32.2
+      js-cookie: ^3.0.1
       lint-staged: ^13.1.2
       postcss: ^8.4.21
       prettier: ^2.8.4
@@ -138,6 +140,7 @@ importers:
       '@tanstack/react-query-devtools': 4.26.1_brdhmlf72zuns3lsk66phyptty
       '@todos/shared': link:../../packages/shared
       classnames: 2.3.2
+      js-cookie: 3.0.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-hook-form: 7.43.5_react@18.2.0
@@ -147,6 +150,7 @@ importers:
       zustand: 4.3.6_react@18.2.0
     devDependencies:
       '@todos/config': link:../../packages/config
+      '@types/js-cookie': 3.0.3
       '@types/react': 18.0.28
       '@types/react-dom': 18.0.11
       '@typescript-eslint/eslint-plugin': 5.54.1_mlk7dnz565t663n4razh6a6v6i
@@ -1577,6 +1581,10 @@ packages:
     resolution: {integrity: sha512-Q0Op0hdWbYd1iahB+IFNQcWXFq4O0Q5MwQP7uN0souuQ4rPg1vEYcnIOfr1gY+M+6rc8FGoRaBO1mOOvL29sEQ==}
     dependencies:
       ci-info: 3.8.0
+    dev: true
+
+  /@types/js-cookie/3.0.3:
+    resolution: {integrity: sha512-Xe7IImK09HP1sv2M/aI+48a20VX+TdRJucfq4vfRVy6nWN8PYPOEnlMRSgxJAgYQIXJVL8dZ4/ilAM7dWNaOww==}
     dev: true
 
   /@types/json-schema/7.0.11:
@@ -3929,6 +3937,11 @@ packages:
   /isexe/2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
     dev: true
+
+  /js-cookie/3.0.1:
+    resolution: {integrity: sha512-+0rgsUXZu4ncpPxRL+lNEptWMOWl9etvPHc/koSRp6MPwpRYAhmk0dUG00J4bxVV3r9uUzfo24wW0knS07SKSw==}
+    engines: {node: '>=12'}
+    dev: false
 
   /js-git/0.7.8:
     resolution: {integrity: sha512-+E5ZH/HeRnoc/LW0AmAyhU+mNcWBzAKE+30+IDMLSLbbK+Tdt02AdkOKq9u15rlJsDEGFqtgckc8ZM59LhhiUA==}
