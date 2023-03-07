@@ -24,14 +24,13 @@
 - [Tailwindcss](https://tailwindcss.com/)
 - [Vite](https://vitejs.dev/)
 - [Zustand](https://github.com/pmndrs/zustand/)
-- [React Hook Form](https://react-hook-form.com/)
+- [React Hook Form](https://react-hook-form.com/) (This could be replaced with [SWR](https://swr.vercel.app/) if needed)
 - [React Query](https://react-query-v3.tanstack.com/)
 
 ### Backend
 - [Express](https://expressjs.com/)
-- [Sequelize](https://sequelize.org/)
-- [Sequelize Typescript](https://www.npmjs.com/package/sequelize-typescript)
-- [Postgres](https://www.postgresql.org/)
+- [Prisma](https://www.prisma.io/)
+- [PlanetScale](https://planetscale.com/)
 
 ## Workspaces
 
