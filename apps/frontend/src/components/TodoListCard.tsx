@@ -1,5 +1,4 @@
 import { createTodo, deleteTodo, getTodos, updateTodo } from '@/api'
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
@@ -20,8 +19,6 @@ interface ITodoListCardProps {
 export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
   const queryClient = useQueryClient()
   const [filters, setFilters] = useState<GetTodosSchema>({})
-
-  const [animationParent] = useAutoAnimate()
 
   const {
     register,
@@ -136,7 +133,7 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
 
       {isLoading ? <TodoListPlaceholder /> : null}
 
-      <TodoList ref={animationParent}>
+      <TodoList>
         {todos?.length !== 0
           ? todos?.map(({ id, title, completed }) => (
               <TodoItem

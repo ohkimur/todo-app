@@ -97,7 +97,6 @@ importers:
 
   apps/frontend:
     specifiers:
-      '@formkit/auto-animate': 1.0.0-beta.6
       '@hookform/resolvers': ^2.9.11
       '@tanstack/react-query': ^4.26.1
       '@tanstack/react-query-devtools': ^4.26.1
@@ -134,7 +133,6 @@ importers:
       zod: ^3.21.4
       zustand: ^4.3.6
     dependencies:
-      '@formkit/auto-animate': 1.0.0-beta.6
       '@hookform/resolvers': 2.9.11_react-hook-form@7.43.5
       '@tanstack/react-query': 4.26.1_biqbaboplfbrettd7655fr4n2y
       '@tanstack/react-query-devtools': 4.26.1_brdhmlf72zuns3lsk66phyptty
@@ -1044,10 +1042,6 @@ packages:
     resolution: {integrity: sha512-JXdzbRiWclLVoD8sNUjR443VVlYqiYmDVT6rGUEIEHU5YJW0gaVZwV2xgM7D4arkvASqD0IlLUVjHiFuxaftRw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
-
-  /@formkit/auto-animate/1.0.0-beta.6:
-    resolution: {integrity: sha512-PVDhLAlr+B4Xb7e+1wozBUWmXa6BFU8xUPR/W/E+TsQhPS1qkAdAsJ25keEnFrcePSnXHrOsh3tiFbEToOzV9w==}
-    dev: false
 
   /@hookform/resolvers/2.9.11_react-hook-form@7.43.5:
     resolution: {integrity: sha512-bA3aZ79UgcHj7tFV7RlgThzwSSHZgvfbt2wprldRkYBcMopdMvHyO17Wwp/twcJasNFischFfS7oz8Katz8DdQ==}
