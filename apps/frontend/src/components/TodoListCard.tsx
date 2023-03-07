@@ -10,7 +10,7 @@ import {
 } from '@todos/shared'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { Button, Card, Input, TodoItem, TodoList } from '.'
+import { Button, Card, Input, TodoItem, TodoList, TodoListPlaceholder } from '.'
 
 interface ITodoListCardProps {
   title?: string
@@ -40,7 +40,6 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
   } = useQuery<TodoSchema[]>({
     queryKey: ['todos', filters],
     queryFn: () => getTodos(filters),
-    initialData: [],
   })
 
   // INFO: More info about optimistic updates: https://tanstack.com/query/v4/docs/react/guides/optimistic-updates
@@ -135,36 +134,33 @@ export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
         </button>
       </form>
 
-      {isLoading ? <p>Loading...</p> : null}
-      <TodoList ref={animationParent}>
-        {!isLoading && todos?.length !== 0 ? (
-          todos?.map(({ id, title, completed }) => (
-            <TodoItem
-              id={String(id)}
-              key={id}
-              title={title}
-              checked={completed}
-              onChange={e => {
-                updateTodoWithMutation({
-                  id: Number(e.target.id),
-                  completed: e.target.checked,
-                })
-              }}
-              onDelete={() => deleteTodoWithMutation(id)}
-              disabled={isLoading}
-            >
-              {title}
-            </TodoItem>
-          ))
-        ) : (
-          <p>No toods.</p>
-        )}
-      </TodoList>
+      {isLoading ? <TodoListPlaceholder /> : null}
 
+      <TodoList ref={animationParent}>
+        {todos?.length !== 0
+          ? todos?.map(({ id, title, completed }) => (
+              <TodoItem
+                id={String(id)}
+                key={id}
+                title={title}
+                checked={completed}
+                onChange={e => {
+                  updateTodoWithMutation({
+                    id: Number(e.target.id),
+                    completed: e.target.checked,
+                  })
+                }}
+                onDelete={() => deleteTodoWithMutation(id)}
+                disabled={isLoading}
+              >
+                {title}
+              </TodoItem>
+            ))
+          : null}
+      </TodoList>
       {isError && (
         <span className='text-red-500'>{(error as Error)?.message}</span>
       )}
-
       <footer className='flex gap-3 mt-12'>
         <span>Show:</span>
         <ul className='flex gap-3'>

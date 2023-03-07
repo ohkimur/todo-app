@@ -47,8 +47,8 @@ export const login = async (
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24,
         sameSite: 'none',
-        secure: process.env.NODE_ENV === 'production',
-        domain: process.env.DOMAIN,
+        secure: true,
+        domain: process.env.DOMAIN || 'localhost',
       })
       .json({
         user: {
@@ -72,8 +72,8 @@ export const logout = async (
     .clearCookie('token', {
       httpOnly: true,
       sameSite: 'none',
-      secure: process.env.NODE_ENV === 'production',
-      domain: process.env.DOMAIN,
+      secure: true,
+      domain: process.env.DOMAIN || 'localhost',
     })
     .json({
       message: 'Logout successful',
@@ -117,8 +117,8 @@ export const register = async (
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24,
         sameSite: 'none',
-        secure: process.env.NODE_ENV === 'production',
-        domain: process.env.DOMAIN,
+        secure: true,
+        domain: process.env.DOMAIN || 'localhost',
       })
       .json({
         user: {
