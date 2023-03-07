@@ -1,1 +1,7 @@
-**/src/components.d.ts
+.cache
+.turbo
+.next
+**/dist/**
+**/.dist/**
+**/build/**
+**/node_modules/**

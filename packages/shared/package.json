@@ -20,9 +20,10 @@
     "dist/"
   ],
   "scripts": {
-    "build": "pnpm clean && pnpm compile",
+    "build": "pnpm clean && pnpm compile:cjs && pnpm compile:esm",
     "clean": "shx rm -rf dist",
-    "compile": "tsc -p tsconfig.json && tsc -p tsconfig.esm.json",
+    "compile:cjs": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
+    "compile:esm": "tsc -p tsconfig.esm.json && tsc-alias -p tsconfig.esm.json",
     "format": "prettier --write \"./src/**/*.{cjs,js,jsx,ts,tsx,css,sass,scss}\" --config ./.prettierrc.cjs",
     "lint:fix": "eslint --fix \"./src/**/*.{cjs,js,jsx,ts,tsx}\"",
     "lint:staged": "lint-staged"
@@ -47,6 +48,7 @@
     "prettier": "^2.8.4",
     "shx": "^0.3.4",
     "ts-node": "^10.9.1",
+    "tsc-alias": "^1.8.2",
     "typescript": "^4.9.5"
   }
 }

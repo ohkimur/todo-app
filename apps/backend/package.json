@@ -15,16 +15,17 @@
     "dist/"
   ],
   "scripts": {
-    "build": "pnpm clean && pnpm compile",
+    "build": "pnpm clean && pnpm compile:cjs && pnpm compile:esm",
     "clean": "shx rm -rf dist",
-    "compile": "tsc -p tsconfig.json && tsc -p tsconfig.esm.json",
+    "compile:cjs": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
+    "compile:esm": "tsc -p tsconfig.esm.json && tsc-alias -p tsconfig.esm.json",
     "db:seed": "tsx ./prisma/seed.ts",
     "dev": "tsx watch --clear-screen=false ./src ./src/index.ts",
     "format": "prettier --write \"./**/*.{cjs,js,jsx,ts,tsx,css,sass,scss}\" --config ./.prettierrc.cjs",
     "postinstall": "pnpm prisma generate",
     "lint:fix": "eslint --fix \"./**/*.{cjs,js,jsx,ts,tsx}\"",
     "lint:staged": "lint-staged",
-    "start": "tsx ./src/index.ts"
+    "start": "pm2 start dist/cjs/src/index.js && pm2 logs"
   },
   "lint-staged": {
     "**/*.{cjs,js,jsx,ts,tsx}": [
@@ -45,6 +46,7 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
+    "pm2": "^5.2.2",
     "react-cookie": "^4.1.1"
   },
   "devDependencies": {
@@ -62,6 +64,7 @@
     "lint-staged": "^13.1.2",
     "prettier": "^2.8.4",
     "shx": "^0.3.4",
+    "tsc-alias": "^1.8.2",
     "tsx": "^3.12.3",
     "typescript": "^4.9.5"
   }

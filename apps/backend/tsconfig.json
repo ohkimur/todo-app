@@ -5,7 +5,7 @@
     "outDir": "dist/cjs",
     "declaration": true,
     "declarationDir": "dist/types",
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"],
       "@db/*": ["prisma/*"]
