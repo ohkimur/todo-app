@@ -1,4 +1,5 @@
 import { getMe, login, logout, register } from '@/api'
+import { useQueryClient } from '@tanstack/react-query'
 import { LoginUserSchema, UserSchema } from '@todos/shared'
 import Cookies from 'js-cookie'
 import { useEffect } from 'react'
@@ -38,6 +39,8 @@ export const useAuth = () => {
     errors,
     setErrors,
   } = useAuthStore()
+
+  const queryClient = useQueryClient()
 
   const navigate = useNavigate()
   const location = useLocation()
@@ -106,6 +109,7 @@ export const useAuth = () => {
   const logoutHandler = async () => {
     await logout()
     setUser(null)
+    queryClient.clear()
     navigate('/login')
   }
 

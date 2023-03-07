@@ -7,7 +7,7 @@ import {
   GetTodosSchema,
   TodoSchema,
 } from '@todos/shared'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Button, Card, Input, TodoItem, TodoList, TodoListPlaceholder } from '.'
 
@@ -19,6 +19,12 @@ interface ITodoListCardProps {
 export const TodoListCard = ({ title, subTitle }: ITodoListCardProps) => {
   const queryClient = useQueryClient()
   const [filters, setFilters] = useState<GetTodosSchema>({})
+
+  useEffect(() => {
+    return () => {
+      queryClient.removeQueries({ queryKey: ['todos', filters] })
+    }
+  }, [])
 
   const {
     register,
