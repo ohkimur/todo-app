@@ -28,9 +28,22 @@
 - [React Query](https://react-query-v3.tanstack.com/)
 
 ### Backend
+- [Node](https://nodejs.org/en/)
+- [RestAPI](https://restfulapi.net/)
 - [Express](https://expressjs.com/)
 - [Prisma](https://www.prisma.io/)
 - [PlanetScale](https://planetscale.com/)
+
+#### Interesting technologies to consider
+- [Strapi](https://strapi.io/)
+- [SWR](https://swr.vercel.app/)
+- [tRPC](https://trpc.io/)
+- [Next.js](https://nextjs.org/)
+- [GraphQL](https://graphql.org/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Redis](https://redis.io/)
+- [Nodemailer](https://nodemailer.com/about/)
+- [Passport](http://www.passportjs.org/)
 
 ## Workspaces
 
