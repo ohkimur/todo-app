@@ -1,4 +1,4 @@
-# Monorepo Template
+# Simpledo - Monorepo Todo App
 
 ## Table of Contents
 
@@ -19,11 +19,11 @@
 - [Changesets](https://github.com/changesets/changesets)
 - [Zod](https://zod.dev/)
 
-### Testing (No tests for this app)
+<!-- ### Testing (No tests for this app)
 - [Jest](https://jestjs.io/) ([Vitest](https://vitest.dev/) would be a good alternative)
 - [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
 - [Cypress](https://www.cypress.io/)
-- [Storybook](https://storybook.js.org/)
+- [Storybook](https://storybook.js.org/) -->
 
 ### Frontend
 - [React](https://reactjs.org/)
