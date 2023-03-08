@@ -4,7 +4,7 @@ import { prisma } from '@db/client'
 import { CreateTodoSchema, UpdateTodoSchema } from '@todos/shared'
 import { NextFunction, Request, Response } from 'express'
 
-const findTodoOrThrow = async (id: number | string, userId: number) => {
+const findTodoOrThrow = async (id: number, userId: number) => {
   const todo = await prisma.todo.findUnique({
     where: {
       id: Number(id),
@@ -56,7 +56,7 @@ export const getTodo = async (
   next: NextFunction
 ) => {
   try {
-    const { id } = req.params
+    const id = Number(req.params.id)
     const todo = await findTodoOrThrow(id, req.user.id)
     res.json(todo)
   } catch (error) {
@@ -90,7 +90,7 @@ export const updateTodo = async (
   next: NextFunction
 ) => {
   try {
-    const { id } = req.params
+    const id = Number(req.params.id)
     const { title, completed } = req.body
 
     await findTodoOrThrow(id, req.user.id)
@@ -116,7 +116,7 @@ export const deleteTodo = async (
   next: NextFunction
 ) => {
   try {
-    const { id } = req.params
+    const id = Number(req.params.id)
 
     await findTodoOrThrow(id, req.user.id)
 
