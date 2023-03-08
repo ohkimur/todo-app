@@ -15,58 +15,54 @@ const createToken = (user: LoginUserSchema) => {
 export const login = async (
   req: ICustomRequest<LoginUserSchema>,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) => {
-  try {
-    const { email, password } = req.body
+  const { email, password } = req.body
 
-    const user = await prisma.user.findUnique({
-      where: {
-        email,
-      },
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  })
+  if (!user) {
+    throw new CustomError({
+      statusCode: 401,
+      message: 'Account does not exist',
     })
-    if (!user) {
-      throw new CustomError({
-        statusCode: 401,
-        message: 'Account does not exist',
-      })
-    }
-
-    const isPasswordValid = await argon2.verify(user.password, password)
-    if (!isPasswordValid) {
-      throw new CustomError({
-        statusCode: 401,
-        message: 'Invalid credentials',
-      })
-    }
-
-    const token = createToken(user)
-
-    res
-      .cookie('token', token, {
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24,
-        sameSite: 'none',
-        secure: true,
-        domain: process.env.DOMAIN || 'localhost',
-      })
-      .cookie('hasAuthToken', true, {
-        maxAge: 1000 * 60 * 60 * 24,
-        sameSite: 'none',
-        secure: true,
-        domain: process.env.DOMAIN || 'localhost',
-      })
-      .json({
-        user: {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-        },
-        message: 'Login successful',
-      })
-  } catch (error) {
-    next(error)
   }
+
+  const isPasswordValid = await argon2.verify(user.password, password)
+  if (!isPasswordValid) {
+    throw new CustomError({
+      statusCode: 401,
+      message: 'Invalid credentials',
+    })
+  }
+
+  const token = createToken(user)
+
+  res
+    .cookie('token', token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24,
+      sameSite: 'none',
+      secure: true,
+      domain: process.env.DOMAIN || 'localhost',
+    })
+    .cookie('hasAuthToken', true, {
+      maxAge: 1000 * 60 * 60 * 24,
+      sameSite: 'none',
+      secure: true,
+      domain: process.env.DOMAIN || 'localhost',
+    })
+    .json({
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+      },
+      message: 'Login successful',
+    })
 }
 
 export const logout = async (
@@ -94,58 +90,54 @@ export const logout = async (
 export const register = async (
   req: ICustomRequest<RegisterUserSchema>,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) => {
   const { name, email, password } = req.body
 
-  try {
-    const user = await prisma.user.findUnique({
-      where: {
-        email,
-      },
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  })
+
+  if (user) {
+    throw new CustomError({
+      statusCode: 400,
+      message: 'User already exists',
     })
-
-    if (user) {
-      throw new CustomError({
-        statusCode: 400,
-        message: 'User already exists',
-      })
-    }
-
-    const hasehdPassword = await argon2.hash(password)
-    const newUser = await prisma.user.create({
-      data: {
-        name,
-        email,
-        password: hasehdPassword,
-      },
-    })
-
-    const token = createToken(newUser)
-
-    res
-      .cookie('token', token, {
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24,
-        sameSite: 'none',
-        secure: true,
-        domain: process.env.DOMAIN || 'localhost',
-      })
-      .cookie('hasAuthToken', true, {
-        maxAge: 1000 * 60 * 60 * 24,
-        sameSite: 'none',
-        secure: true,
-        domain: process.env.DOMAIN || 'localhost',
-      })
-      .json({
-        user: {
-          id: newUser.id,
-          name: newUser.name,
-          email: newUser.email,
-        },
-        message: 'Registration successful',
-      })
-  } catch (error) {
-    next(error)
   }
+
+  const hasehdPassword = await argon2.hash(password)
+  const newUser = await prisma.user.create({
+    data: {
+      name,
+      email,
+      password: hasehdPassword,
+    },
+  })
+
+  const token = createToken(newUser)
+
+  res
+    .cookie('token', token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24,
+      sameSite: 'none',
+      secure: true,
+      domain: process.env.DOMAIN || 'localhost',
+    })
+    .cookie('hasAuthToken', true, {
+      maxAge: 1000 * 60 * 60 * 24,
+      sameSite: 'none',
+      secure: true,
+      domain: process.env.DOMAIN || 'localhost',
+    })
+    .json({
+      user: {
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+      },
+      message: 'Registration successful',
+    })
 }

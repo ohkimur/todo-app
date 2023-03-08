@@ -1,7 +1,4 @@
 {
-  "search.exclude": {
-    "**/.pnp.*": true
-  },
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "git.ignoreLimitWarning": true,
   "tailwindCSS.experimental.classRegex": ["tw`([^`]*)"],
