@@ -1,13 +1,14 @@
 import { ICustomRequest } from '@/types'
-import { CustomError } from '@/utils'
+import { CustomError, parseBoolean } from '@/utils'
 import { prisma } from '@db/client'
 import { CreateTodoSchema, UpdateTodoSchema } from '@todos/shared'
 import { NextFunction, Request, Response } from 'express'
 
 const findTodoOrThrow = async (id: number, userId: number) => {
-  const todo = await prisma.todo.findUnique({
+  const todo = await prisma.todo.findFirstOrThrow({
     where: {
-      id: Number(id),
+      id,
+      userId,
     },
   })
   if (!todo) {
@@ -16,14 +17,6 @@ const findTodoOrThrow = async (id: number, userId: number) => {
       message: 'Todo not found',
     })
   }
-
-  if (todo.userId !== userId) {
-    throw new CustomError({
-      statusCode: 401,
-      message: 'Unauthorized',
-    })
-  }
-
   return todo
 }
 
@@ -33,11 +26,7 @@ export const getTodos = async (
   next: NextFunction
 ) => {
   try {
-    const completed =
-      req.query.completed === 'true' || req.query.completed === 'false'
-        ? req.query.completed === 'true'
-        : undefined
-
+    const completed = parseBoolean(req.query.completed)
     const todos = await prisma.todo.findMany({
       where: {
         userId: req.user.id,
@@ -74,7 +63,7 @@ export const createTodo = async (
     const newTodo = await prisma.todo.create({
       data: {
         title,
-        completed: completed || false,
+        completed,
         userId: req.user.id,
       },
     })
@@ -97,7 +86,7 @@ export const updateTodo = async (
 
     const updatedTodo = await prisma.todo.update({
       where: {
-        id: Number(id),
+        id,
       },
       data: {
         title,
@@ -122,7 +111,7 @@ export const deleteTodo = async (
 
     const deletedTodo = await prisma.todo.delete({
       where: {
-        id: Number(id),
+        id,
       },
     })
     res.json(deletedTodo)
