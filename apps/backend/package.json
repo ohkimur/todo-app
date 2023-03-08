@@ -46,8 +46,7 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
-    "pm2": "^5.2.2",
-    "react-cookie": "^4.1.1"
+    "pm2": "^5.2.2"
   },
   "devDependencies": {
     "@todos/config": "workspace:^0.0.1",

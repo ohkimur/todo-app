@@ -1,12 +1,12 @@
 {
   "extends": "@todos/config/typescript/base.json",
   "compilerOptions": {
-    "baseUrl": ".",
     "composite": true,
     "module": "ESNext",
     "declaration": true,
     "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     }
